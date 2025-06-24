@@ -8,6 +8,7 @@
 #include "Archer.h"
 #include "Warrior.h"
 #include "Monster.h"
+#include "TradeManager.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ public:
 
 	BattleManager* battleManager = nullptr;
 	StoryManager* storyManager = nullptr;
-
+	TradeManager* tradeManager = nullptr;
 	Character* player = nullptr;
 
 public:

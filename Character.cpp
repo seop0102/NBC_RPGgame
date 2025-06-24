@@ -136,9 +136,11 @@ void Character::removeItem(int index)
 
 void Character::showInventory() const
 {
-	for (Item* i : inventory)
+	cout << "인벤토리 정보" << endl;
+	for (int i = 0; i < inventory.size(); i++)
 	{
-		//아이템 정보 출력
+		cout << i << ". " << inventory[i]->getName() << " [가격 : " << inventory[i]->getPrice()<< "gold";
+		cout << endl;
 	}
 
 }
