@@ -9,7 +9,7 @@ GameManager::~GameManager() {
 }
 void GameManager::startGame()
 {
-	storyManager->askUsername();
+	storyManager->startPrologue();
 	string job = storyManager->getJob();
 	IClass* selectedClass = nullptr;
 	if (job == "°Ë»ç") {
