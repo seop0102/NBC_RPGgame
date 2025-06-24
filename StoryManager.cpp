@@ -2,6 +2,7 @@
 #include "StoryManager.h"
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 StoryManager::StoryManager() {} //초기화 시켜주기
 //나중에 startPrologue만 호출하면 됨
 void StoryManager::startPrologue() { //전체 프롤로그 실행
@@ -39,7 +40,8 @@ void StoryManager::playPrologue() {
 			}
 		}
 		totalScore += userChoice;
-	}
+		system("cls");
+	} 
 }
 void StoryManager::askUsername() {
 	/*이름에 공백이 하나라도 존재하면 안되게 설정함
