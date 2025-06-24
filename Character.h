@@ -3,13 +3,11 @@
 #include<string>
 #include<vector>
 #include<iostream>
-#include<map> // 연관 컨테이너 Key, Value 
+#include<map> 
 
 #include "IClass.h"
 #include "ICombatant.h"
 #include "Item.h"
-
-using namespace std;
 
 class Monster;
 
@@ -55,12 +53,13 @@ private:
 
 public:
 	Character(std::string name, IClass* selectedClass);
+	virtual ~Character();
 
 	// ICombatant 인터페이스
 	void takeDamage(int damage) override;
 	int getAttack() const override { return attack; }
 	int getHealth() const override { return health; }
-	string getName() const override { return name; }
+	std::string getName() const override { return name; }
 	int getDefense() const { return defense; } // 방어력 반환
 	int getDodgeChance() const { return dodgeChance; } // 회피율 반환
 
@@ -126,6 +125,6 @@ public:
 	void setCriticalChance(int chance) { criticalChance = chance; }
 	void setHitChance(int chance) { hitChance = chance; }
 	void setDodgeChance(int chance) { dodgeChance = chance; }
-	void setGold(int newGold) { gold = newGold; } // 도적 스킬 등에서 필요
+	void setGold(int newGold) { gold = newGold; } // 도적 스킬에서 필요
 
 };

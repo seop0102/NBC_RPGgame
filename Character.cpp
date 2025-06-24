@@ -6,7 +6,6 @@
 #include "ICombatant.h"
 
 #include <iostream>
-#include <limits>
 #include <algorithm>
 #include <map>
 
@@ -25,6 +24,33 @@ Character::Character(std::string name, IClass* selectedClass)
 	equippedWeapon(nullptr), equippedArmor(nullptr)
 {
 	characterClass = selectedClass;
+	initializeSkillUsages();
+}
+
+Character::~Character() {
+	// 1. 장착된 무기가 있다면 해제
+	if (equippedWeapon != nullptr) {
+		delete equippedWeapon;
+		equippedWeapon = nullptr;
+	}
+	// 2. 장착된 방어구가 있다면 해제
+	if (equippedArmor != nullptr) {
+		delete equippedArmor;
+		equippedArmor = nullptr;
+	}
+	// 3. 인벤토리 내의 모든 아이템을 해제
+	for (Item* item : inventory) {
+		if (item != nullptr) {
+			delete item;
+		}
+	}
+	inventory.clear();
+	// 4. 캐릭터의 직업 객체를 해제
+	if (characterClass != nullptr) {
+		delete characterClass;
+		characterClass = nullptr;
+	}
+	std::cout << name << " 캐릭터가 소멸되었습니다. 관련 메모리가 해제되었습니다." << std::endl;
 }
 
 void Character::displayStat()
@@ -42,27 +68,32 @@ void Character::displayStat()
 void Character::levelUp()
 {
 	const int MAX_LEVEL = 10;
-	const int EXP_TO_NEXT_LEVEL = level * 100;
 
 	if (level >= MAX_LEVEL) {
 		std::cout << "10레벨에 도달했습니다!" << std::endl;
 		return;
 	}
 
-	if (exp >= EXP_TO_NEXT_LEVEL) {
-		level++;
-		exp -= EXP_TO_NEXT_LEVEL;
+	while (level < MAX_LEVEL) {
+		const int EXP_TO_NEXT_LEVEL = level * 100; // *현재* 레벨을 기반으로 계산
 
-		maxHealth += 20; // 최대 체력 증가
-		health = maxHealth; // 체력 회복
-		attack += 5; // 공격력 증가
+		if (exp >= EXP_TO_NEXT_LEVEL) {
+			level++;
+			exp -= EXP_TO_NEXT_LEVEL;
 
-		std::cout << "레벨 업 :" << level << "이(가) 되었습니다." << std::endl;
-		std::cout << "최대 체력 +20, 공격력 +5 증가" << std::endl;
-	}
-	else {
-		std::cout << "경험치가 부족합니다. 다음 레벨업 까지 " << (EXP_TO_NEXT_LEVEL - exp) << "경험치가 더 필요합니다." << std::endl;
-	}
+			maxHealth += 20;
+			health = maxHealth;
+			attack += 5;
+
+			std::cout << "레벨 업 :" << level << "이(가) 되었습니다." << std::endl;
+			std::cout << "최대 체력 +20, 공격력 +5 증가" << std::endl;
+		}
+		else {
+			// *현재* 레벨에 충분한 경험치가 없으면 루프 종료
+			std::cout << "경험치가 부족합니다. 다음 레벨업 까지 " << (EXP_TO_NEXT_LEVEL - exp) << "경험치가 더 필요합니다." << std::endl;
+			break;
+		}
+	 }
 }
 
 void Character::takeDamage(int damage)
@@ -103,32 +134,48 @@ void Character::removeGold(int amount)
 }
 
 // 아이템 추가 함수
-void Character::addItem(Item* item)
+void Character::addItem(Item* newItem)
 {
 	if (inventory.size() >= 10) { // 인벤토리 최대 10개 아이템
 		showInventory();
-		std::cout << "인벤토리가 가득 찼습니다. 다른 아이템을 버리시겠습니까?" << std::endl;
+		std::cout << "인벤토리가 가득 찼습니다. " << newItem->getName() << "을(를) 획득하려면 기존 아이템을 버려야 합니다." << std::endl;
+		std::cout << "어떤 아이템을 버리시겠습니까? (0-" << inventory.size() - 1 << ", 취소: -1): ";
 
-		//선택지 추가 예정
-		int index = 0;
-		item; // 아이템 정보 출력
-		swap(item, inventory[index]); // 마지막 아이템과 교체
+		int choice;
+		while (!(std::cin >> choice) || (choice < -1 || choice >= inventory.size())) {
+			std::cout << "잘못된 입력입니다. 다시 입력해주세요 (0-" << inventory.size() - 1 << ", 취소: -1): ";
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+		}
 
-		delete item;
-
+		if (choice >= 0 && choice < inventory.size()) {
+			Item* oldItem = inventory[choice]; // 버릴 아이템 포인터 저장
+			inventory[choice] = newItem;        // 새 아이템으로 교체 (포인터 할당)
+			std::cout << oldItem->getName() << "을(를) 버리고 " << newItem->getName() << "을(를) 획득했습니다." << std::endl;
+			delete oldItem; // 버려진 아이템 메모리 해제
+		}
+		else { // 취소를 선택한 경우
+			std::cout << newItem->getName() << " 획득을 취소했습니다." << std::endl;
+			delete newItem; 
+		}
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+		return; // 아이템을 추가했든 안 했든 함수 종료
 	}
 
-	inventory.push_back(item);
-	std::cout << item->getName() << "을(를) 인벤토리에 추가했습니다." << std::endl;
+	// 인벤토리가 가득 차지 않은 경우 아이템 추가
+	inventory.push_back(newItem);
+	std::cout << newItem->getName() << "을(를) 인벤토리에 추가했습니다." << std::endl;
 }
 
 // 아이템 제거 함수
 void Character::removeItem(int index)
 {
 	if (index >= 0 && index < inventory.size()) {
-		std::cout << inventory[index]->getName() << "을(를) 인벤토리에서 제거했습니다." << std::endl;
-		inventory.erase(inventory.begin() + index);
-	}
+        Item* itemToRemove = inventory[index]; // 삭제할 아이템 포인터 저장
+        std::cout << itemToRemove->getName() << "을(를) 인벤토리에서 제거했습니다." << std::endl;
+        inventory.erase(inventory.begin() + index); // 벡터에서 포인터 제거
+        delete itemToRemove; 
+    }
 	else {
 		std::cout << "잘못된 아이템 인덱스입니다." << std::endl;
 	}
@@ -136,33 +183,80 @@ void Character::removeItem(int index)
 
 void Character::showInventory() const
 {
-	for (Item* i : inventory)
-	{
-		//아이템 정보 출력
+	std::cout << "-------- 인벤토리 --------" << std::endl;
+	if (inventory.empty()) {
+		std::cout << "인벤토리가 비어 있습니다." << std::endl;
 	}
+	else {
+		for (size_t i = 0; i < inventory.size(); ++i) { // size_t 사용
+			std::cout << "[" << i << "] " << inventory[i]->getName();
 
+			// 추가적인 아이템 정보 출력
+			WeaponItem* weapon = dynamic_cast<WeaponItem*>(inventory[i]);
+			if (weapon) std::cout << " (공격력: " << weapon->getAttackBonus() << ")";
+			ArmorItem* armor = dynamic_cast<ArmorItem*>(inventory[i]);
+			if (armor) std::cout << " (방어력: " << armor->getDefenseBonus() << ")";
+			std::cout << std::endl;
+		}
+	}
+	std::cout << "--------------------------" << std::endl;
 }
 
-void Character::equipWeapon(WeaponItem* weapon) {
-	if (equippedWeapon != nullptr)
-	{
-		swap(equippedWeapon, weapon); // 기존 무기와 교체
+void Character::equipWeapon(WeaponItem* newWeapon) {
+	if (newWeapon == nullptr) {
+		std::cout << "유효하지 않은 무기입니다." << std::endl;
+		return;
 	}
-	else
-	{
-		equippedWeapon = weapon; // 무기 장착
+
+	// 1. 기존에 장착된 무기가 있다면 인벤토리로 돌려보냅니다.
+	if (equippedWeapon != nullptr) {
+		// 기존 무기의 스탯 보너스를 캐릭터 스탯에서 제거하는 로직 추가
+		attack -= equippedWeapon->getAttackBonus(); 
+		inventory.push_back(equippedWeapon);
+		std::cout << equippedWeapon->getName() << "을(를) 인벤토리에 되돌렸습니다." << std::endl;
+	}
+
+	// 2. 새 무기를 장착하고 스탯을 조정
+	equippedWeapon = newWeapon;
+	// 새 무기의 스탯 보너스를 캐릭터 스탯에 추가하는 로직 추가
+	attack += newWeapon->getAttackBonus(); 
+	std::cout << newWeapon->getName() << "을(를) 장착했습니다." << std::endl;
+
+	// 3. 인벤토리에서 장착한 아이템을 제거 (만약 인벤토리에 있었다면)
+	for (size_t i = 0; i < inventory.size(); ++i) {
+		if (inventory[i] == newWeapon) {
+			inventory.erase(inventory.begin() + i);
+			break;
+		}
 	}
 }
-
-void Character::equipArmor(ArmorItem* armor)
+void Character::equipArmor(ArmorItem* newArmor)
 {
-	if (equippedWeapon != nullptr)
-	{
-		swap(equippedArmor, armor); // 기존 방어구와 교체
+	if (newArmor == nullptr) {
+		std::cout << "유효하지 않은 방어구입니다." << std::endl;
+		return;
 	}
-	else
-	{
-		equippedArmor = armor; // 방어구 장착
+
+	// 1. 기존에 장착된 방어구가 있다면 인벤토리로 돌려보냅니다.
+	if (equippedArmor != nullptr) { 
+		// 기존 방어구의 스탯 보너스를 캐릭터 스탯에서 제거하는 로직 추가
+		defense -= equippedArmor->getDefenseBonus(); 
+		inventory.push_back(equippedArmor);
+		std::cout << equippedArmor->getName() << "을(를) 인벤토리에 되돌렸습니다." << std::endl;
+	}
+
+	// 2. 새 방어구를 장착하고 스탯을 조정합니다.
+	equippedArmor = newArmor;
+	// 새 방어구의 스탯 보너스를 캐릭터 스탯에 추가하는 로직 추가
+	defense += newArmor->getDefenseBonus(); 
+	std::cout << newArmor->getName() << "을(를) 장착했습니다." << std::endl;
+
+	// 3. 인벤토리에서 장착한 아이템을 제거 (만약 인벤토리에 있었다면)
+	for (size_t i = 0; i < inventory.size(); ++i) {
+		if (inventory[i] == newArmor) {
+			inventory.erase(inventory.begin() + i);
+			break;
+		}
 	}
 }
 
@@ -177,19 +271,50 @@ void Character::useItem(int itemindex) {
 
 	if (edible)
 	{
-		edible->use(); // 아이템 사용
+		edible->use(*this); // 현재 Character 객체를 넘겨주어 소모품이 스탯을 변경할 수 있게
 	}
-	else
+	else // 소모품이 아닌 경우 (무기/방어구 등)
 	{
+		// 무기나 방어구를 선택한 경우, 장착 여부를 물어보는 로직을 추가할 수 있습니다.
+		WeaponItem* weapon = dynamic_cast<WeaponItem*>(inventory[itemindex]);
+		if (weapon) {
+			std::cout << weapon->getName() << "을(를) 장착하시겠습니까? (y/n): ";
+			char choice;
+			std::cin >> choice;
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
+			if (tolower(choice) == 'y') {
+				equipWeapon(weapon);
+				// equipWeapon 내부에서 인벤토리에서 제거되므로 여기서 removeItem 호출 불필요
+			}
+			else {
+				std::cout << "무기 장착을 취소했습니다." << std::endl;
+			}
+			return; // 처리 완료
+		}
+		
+		ArmorItem* armor = dynamic_cast<ArmorItem*>(inventory[itemindex]);
+		if (armor) {
+			std::cout << armor->getName() << "을(를) 장착하시겠습니까? (y/n): ";
+			char choice;
+			std::cin >> choice;
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
+			if (tolower(choice) == 'y') {
+				equipArmor(armor);
+				// equipArmor 내부에서 인벤토리에서 제거되므로 여기서 removeItem 호출 불필요
+			}
+			else {
+				std::cout << "방어구 장착을 취소했습니다." << std::endl;
+			}
+			return; // 처리 완료
+		}
+
 		std::cout << "사용할 수 없는 아이템입니다." << std::endl;
 		return;
-
 	}
 
-	removeItem(itemindex); // 아이템 사용 후 인벤토리에서 제거
+	// 소모품을 사용한 경우에만 인벤토리에서 제거
+	removeItem(itemindex);
 }
-
-
 
 std::vector<std::string> Character::getActiveSkills() const {
 	if (characterClass) return characterClass->getActiveSkills();
