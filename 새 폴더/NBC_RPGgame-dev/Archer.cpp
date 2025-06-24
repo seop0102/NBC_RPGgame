@@ -10,7 +10,7 @@ Archer::Archer() {
     activeSkills.push_back("기본 공격"); // 모든 직업은 기본 공격을 가집니다.
     activeSkills.push_back("화살 명중");
     activeSkills.push_back("조준");
-
+    activeSkills.push_back("조준");
     activeSkills.push_back("폭풍 화살");
     activeSkills.push_back("망령 화살");
 }
@@ -31,16 +31,6 @@ std::vector<std::string> Archer::getActiveSkills() const {
 void Archer::applyPassiveSkill(Character& self) {
     self.setHitChance(self.getHitChance() + 15);
     std::cout << "[패시브 발동] " << self.getName() << "은(는) 매의 눈으로 명중률이 15% 증가했습니다! 현재 명중률: " << self.getHitChance() << "%" << std::endl;
-}
-
-void Archer::showSkills() const
-{
-        int count = 1;
-        for (const auto& skill : activeSkills) {
-                std::cout << count << ' ' << skill << std::endl; // 스킬 이름 출력
-                count++;
-        }
-        
 }
 
 // SkillType 대신 const std::string&을 매개변수로 받도록 변경

@@ -3,8 +3,6 @@
 
 bool BattleManager::doBattle(Character* player)
 {
-	IClass* Cclass = player->getCharacterClass();
-
 	Monster* monster = CreateMonster(player);
 
 	if (player->getLevel() >= 10) {
@@ -18,9 +16,11 @@ bool BattleManager::doBattle(Character* player)
 	while (player->getHealth() > 0 && monster->getHealth() > 0)
 	{
 
-
 		//전투 구현
-		playerchoice(player, monster); // 플레이어가 스킬을 선택하는 함수 호출
+		monster->takeDamage(player->getAttack());
+
+		player->takeDamage(monster->getAttack());
+		//
 
 		if (monster->getHealth() <= 0) {
 
@@ -41,8 +41,6 @@ bool BattleManager::doBattle(Character* player)
 			break;
 		}
 
-		player->takeDamage(monster->getAttack()); // 몬스터의 공격으로 플레이어 피해
-
 		if (player->getHealth() <= 0) {
 			std::cout << "플레이어가 쓰러졌습니다!" << std::endl;
 
@@ -52,21 +50,6 @@ bool BattleManager::doBattle(Character* player)
 			break;
 		}
 	}
-}
-
-void BattleManager::playerchoice(Character* player, Monster* monster)
-{
-	IClass* Cclass = player->getCharacterClass();
-
-	Cclass->showSkills(); // 캐릭터 클래스의 스킬 목록 출력
-
-	int choice = 0;
-	cout << "사용할 스킬을 선택하세요:" << endl;
-
-	cin >> choice;
-
-	Cclass->useSkill((Cclass->getSkillbyIndex(choice)), *player, *monster); // 선택한 스킬 사용
-
 }
 
 Monster* BattleManager::CreateMonster(Character* player)

@@ -15,8 +15,6 @@ public:
 	std::vector<std::string> getActiveSkills() const override; // SkillType 대신 const std::string& 매개변수 받도록 변경
 	void useSkill(const std::string& skillName, Character& self, Monster& target) override;
 	void applyPassiveSkill(Character& self) override;
-	void showSkills() const override;
-	string getSkillbyIndex(int index) const override { return activeSkills[index-1]; } // 스킬 인덱스 반환 함수 (필요시 구현)
 
 private:
 	// SkillType 대신 std::string을 저장하도록 변경

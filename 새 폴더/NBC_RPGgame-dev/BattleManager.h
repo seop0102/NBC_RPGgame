@@ -23,8 +23,5 @@ public:
 
 	bool doBattle(Character* player); //전투를 클리어 하면 true 아니면 false 반환
 
-	void playerchoice(Character* player, Monster* monster); //플레이어가 스킬을 선택하는 함수
-
-
 	Monster* CreateMonster(Character* player);
 };

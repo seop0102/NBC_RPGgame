@@ -69,9 +69,6 @@ public:
 	void applyPassiveSkill(Character& self);
 	std::string getClassName() const;
 
-	//
-	IClass* getCharacterClass() const { return characterClass; }
-
 	bool isAlive() const { return health > 0; } // 살았는지 죽었는지 확인
 
 	// 캐릭터 기능
