@@ -2,10 +2,12 @@
 GameManager::GameManager() {
 	battleManager = new BattleManager();
 	storyManager = new StoryManager();
+	tradeManager = new TradeManager();
 }
 GameManager::~GameManager() {
 	delete battleManager;
 	delete storyManager;
+	delete tradeManager;
 }
 void GameManager::startGame()
 {

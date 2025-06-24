@@ -120,6 +120,7 @@ public:
 	int getGold() const { return gold; }
 	int getHitChance() const { return hitChance; }
 	int getCriticalChance() const { return criticalChance; }
+	vector<Item*> getInventory() { return inventory; }
 
 	// 세터 함수
 	void setHealth(int newHealth) { health = newHealth; }
