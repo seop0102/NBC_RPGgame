@@ -66,13 +66,13 @@
     <ClCompile Include="Shop.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ShopManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Skeleton.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Slime.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TradeManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,9 +131,6 @@
     <ClInclude Include="Shop.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ShopManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Skeleton.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -141,6 +138,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TradeManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

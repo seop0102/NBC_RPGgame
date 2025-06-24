@@ -3,7 +3,7 @@
 int main() {
 	GameManager gameManager;
 
-	gameManager.storyManager->startPrologue(); // ÇÁ·Ñ·Î±× ½ÃÀÛ
+	//gameManager.storyManager->startPrologue(); 
 
 	gameManager.startGame();
 
