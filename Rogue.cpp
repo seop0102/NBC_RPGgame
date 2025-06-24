@@ -33,6 +33,16 @@ void Rogue::applyPassiveSkill(Character& self) {
     std::cout << "[패시브 발동] " << self.getName() << "은(는) 날렵한 몸놀림으로 회피율이 20% 증가했습니다! 현재 회피율: " << self.getDodgeChance() << "%" << std::endl;
 }
 
+void Rogue::showSkills() const
+{
+        int count = 1;
+        for (const auto& skill : activeSkills) {
+                std::cout << count << ' ' << skill << std::endl; // 스킬 이름 출력
+                count++;
+        }
+
+}
+
 // SkillType 대신 const std::string&을 매개변수로 받도록 변경
 void Rogue::useSkill(const std::string& skillName, Character& self, Monster& target) {
     // switch 문 대신 if-else if 문으로 문자열 비교

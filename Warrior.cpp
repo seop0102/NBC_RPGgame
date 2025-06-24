@@ -24,6 +24,16 @@ std::vector<std::string> Warrior::getActiveSkills() const {
     return activeSkills;
 }
 
+void Warrior::showSkills() const
+{
+        int count = 1;
+        for (const auto& skill : activeSkills) {
+                std::cout << count << ' ' << skill << std::endl; // 스킬 이름 출력
+                count++;
+        }
+
+}
+
 // 매개변수를 const std::string&으로 변경하고 내부 로직도 문자열 비교로 변경
 void Warrior::useSkill(const std::string& skillName, Character& self, Monster& target) {
     if (skillName == "기본 공격") {

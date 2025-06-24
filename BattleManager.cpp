@@ -61,12 +61,12 @@ void BattleManager::playerchoice(Character* player, Monster* monster)
 	Cclass->showSkills(); // 캐릭터 클래스의 스킬 목록 출력
 
 	int choice = 0;
+
 	cout << "사용할 스킬을 선택하세요:" << endl;
 
 	cin >> choice;
 
 	Cclass->useSkill((Cclass->getSkillbyIndex(choice)), *player, *monster); // 선택한 스킬 사용
-
 }
 
 Monster* BattleManager::CreateMonster(Character* player)
