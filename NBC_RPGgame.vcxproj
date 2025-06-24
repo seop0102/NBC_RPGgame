@@ -138,10 +138,10 @@
     <ClCompile Include="Orc.cpp" />
     <ClCompile Include="Rogue.cpp" />
     <ClCompile Include="Shop.cpp" />
-    <ClCompile Include="ShopManager.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="StoryManager.cpp" />
+    <ClCompile Include="TradeManager.cpp" />
     <ClCompile Include="Warrior.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,10 +161,10 @@
     <ClInclude Include="Orc.h" />
     <ClInclude Include="Rogue.h" />
     <ClInclude Include="Shop.h" />
-    <ClInclude Include="ShopManager.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Slime.h" />
     <ClInclude Include="StoryManager.h" />
+    <ClInclude Include="TradeManager.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Warrior.h" />
   </ItemGroup>

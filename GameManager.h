@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BattleManager.h"
-#include "ShopManager.h"
 #include "StoryManager.h"
 #include "Character.h"
 #include "IClass.h"
@@ -13,7 +12,6 @@
 using namespace std;
 
 class BattleManager;
-class ShopManager;
 class StoryManager;
 class Character;
 
@@ -22,7 +20,6 @@ class GameManager {
 public:
 
 	BattleManager* battleManager = nullptr;
-	ShopManager* shopManager = nullptr;
 	StoryManager* storyManager = nullptr;
 
 	Character* player = nullptr;
