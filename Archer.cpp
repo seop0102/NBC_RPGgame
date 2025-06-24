@@ -10,7 +10,6 @@ Archer::Archer() {
     activeSkills.push_back("기본 공격"); // 모든 직업은 기본 공격을 가집니다.
     activeSkills.push_back("화살 명중");
     activeSkills.push_back("조준");
-
     activeSkills.push_back("폭풍 화살");
     activeSkills.push_back("망령 화살");
 }
@@ -23,7 +22,6 @@ namespace {
     void performArcher4(Character& self, Monster& target); // 망령 화살
 }
 
-// std::vector<SkillType> 대신 std::vector<std::string> 반환
 std::vector<std::string> Archer::getActiveSkills() const {
     return activeSkills; // 생성자에서 초기화된 스킬 목록 반환
 }

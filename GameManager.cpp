@@ -25,6 +25,7 @@ void GameManager::startGame()
 		// 예외 처리
 	}
 	player = new Character(storyManager->getName(), selectedClass);
+	player->initializeSkillUsages();
 	player->displayStat();
 }
 void GameManager::playGame()
