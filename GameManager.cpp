@@ -1,12 +1,10 @@
 #include "GameManager.h"  
 GameManager::GameManager() {
 	battleManager = new BattleManager();
-	shopManager = new ShopManager();
 	storyManager = new StoryManager();
 }
 GameManager::~GameManager() {
 	delete battleManager;
-	delete shopManager;
 	delete storyManager;
 }
 void GameManager::startGame()
@@ -36,7 +34,7 @@ void GameManager::playGame()
 	{
 		cout << "전투를 클리어 했습니다!" << endl;
 		player->displayStat();
-		shopManager->openShop();
+		//상점클래스의 오픈함수로 다시 추가
 	}
 	else
 	{
