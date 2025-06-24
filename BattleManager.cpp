@@ -43,6 +43,8 @@ bool BattleManager::doBattle(Character* player)
 
 		player->takeDamage(monster->getAttack()); // 몬스터의 공격으로 플레이어 피해
 
+		player->displayStat();
+
 		if (player->getHealth() <= 0) {
 			std::cout << "플레이어가 쓰러졌습니다!" << std::endl;
 
