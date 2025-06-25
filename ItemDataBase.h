@@ -31,9 +31,7 @@ class ItemDataBase
 private:
     std::vector<ItemData> itemDataList;
     std::unordered_map<std::string, int> nameToIndex; // 이름으로 빠른 검색
-    ItemType stringToItemType(const std::string& typeStr) const;
-    ItemTier stringToItemTier(const std::string& tierStr) const;
-    // 문자열을 enum으로 변환하는 헬퍼 함수
+
 public:
     //생성자
     ItemDataBase();
@@ -44,6 +42,9 @@ public:
     Item* createItem(const std::string& itemName) const;
     Item* createItem(int index) const;
 
+    ItemType stringToItemType(const std::string& typeStr) const;
+    ItemTier stringToItemTier(const std::string& tierStr) const;
+
     //아이템 데이터 조회
     const ItemData* getItemData(const std::string& itemName) const;
     const ItemData* getItemData(int index) const;
@@ -53,10 +54,11 @@ public:
     std::vector<Item*> getItemsByType(ItemType type) const;
     std::vector<Item*> getItemsByTier(ItemTier tier) const;
 
-    // 전체 아이템 목록 출력(디버깅용)
-    void printAllItems() const; // 오타 수정: pritntAllItems -> printAllItems
-    // 상점용
-    std::vector<Item*> getShopItems(int maxPrice = INT_MAX) const;
+    std::vector<const ItemData*> getShopItemDatas(int maxPrice = INT_MAX) const;
+    std::vector<const ItemData*> getItemDatasByType(ItemType type) const;
+    std::vector<const ItemData*> getItemDatasByTier(ItemTier tier) const;
+    const ItemData* getRandomItemData() const;
 
-    Item* getRandomItem() const; // 랜덤 아이템 생성 함수(몬스터 드랍용)
+    // 전체 아이템 목록 출력(디버깅용)
+    void printAllItemsData() const;
 };

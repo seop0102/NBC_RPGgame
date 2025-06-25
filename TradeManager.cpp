@@ -2,31 +2,33 @@
 #include <iostream>
 #include <limits>
 
-TradeManager::TradeManager() : itemDB() {}
+TradeManager::TradeManager() {}
 TradeManager::~TradeManager() {}
 
-void TradeManager::buyItem(Character &c, Item* item)
+void TradeManager::buyItem(Character& c, Shop& shop, int itemIndex, int maxPrice)
 {
-	if (!item) { // 유효한 아이템인지 확인
+	Item* itemToBuy = shop.getSelectedItemForPurchase(itemIndex);
+
+	if (!itemToBuy) {
 		std::cout << "유효하지 않은 아이템입니다." << std::endl;
 		return;
 	}
 
-	if (item->getPrice() > c.getGold())
+	if (itemToBuy->getPrice() > c.getGold())
 	{
 		std::cout << "골드가 부족합니다." << std::endl;
-		delete item; 
+		delete itemToBuy;
 	}
 	else if (c.getInventory().size() >= 10)
 	{
 		std::cout << "인벤토리가 가득 찼습니다." << std::endl;
-		delete item; 
+		delete itemToBuy;
 	}
 	else
 	{
-		c.removeGold(item->getPrice()); // 골드 먼저 차감
-		c.addItem(item); // Character가 아이템 포인터의 소유권을 가집니다.
-		std::cout << "아이템 구매 완료: " << item->getName() << std::endl;
+		c.removeGold(itemToBuy->getPrice());
+		c.addItem(itemToBuy);
+		std::cout << "아이템 구매 완료: " << itemToBuy->getName() << std::endl;
 	}
 }
 
@@ -58,7 +60,7 @@ void TradeManager::sellItem(Character& c)
 			Item* itemToSell = c.getInventory()[invenIndex];
 			double sellPrice = itemToSell->getPrice() * 0.6;
 			c.addGold(static_cast<int>(sellPrice));
-			c.removeItem(invenIndex); 
+			c.removeItem(invenIndex);
 			std::cout << "아이템 판매 완료! " << static_cast<int>(sellPrice) << " 골드를 얻었습니다." << std::endl;
 			break;
 		}
@@ -66,23 +68,6 @@ void TradeManager::sellItem(Character& c)
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void TradeManager::showShopItems(int maxPrice) const {
-	std::cout << "-------- 상점 아이템 --------" << std::endl;
-	std::vector<Item*> shopItems = itemDB.getShopItems(maxPrice); // ItemDataBase에서 아이템 생성
-
-	if (shopItems.empty()) {
-		std::cout << "현재 상점에 아이템이 없습니다." << std::endl;
-	}
-	else {
-		for (size_t i = 0; i < shopItems.size(); ++i) {
-			std::cout << "[" << i << "] " << shopItems[i]->getItemInfo() << std::endl;
-		}
-	}
-	std::cout << "--------------------------" << std::endl;
-
-	// showShopItems에서 생성된 아이템들은 이 함수가 끝나면 메모리 해제해야 합니다.
-	for (Item* item : shopItems) {
-		delete item;
-	}
-	shopItems.clear();
+void TradeManager::showShopItems(Shop& shop, int maxPrice) const {
+	shop.displayShopItems(maxPrice);
 }

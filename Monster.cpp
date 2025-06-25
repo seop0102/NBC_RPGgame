@@ -44,5 +44,13 @@ int Monster::getGold() const
 // 몬스터가 아이템을 드랍하는 함수
 Item* Monster::dropItem() const
 {
-	return ItemDataBase().getRandomItem();
+    ItemDataBase itemDB;
+    const ItemData* randomItemData = itemDB.getRandomItemData();
+
+    if (randomItemData) {
+        return itemDB.createItem(randomItemData->name);
+    }
+    else {
+        return nullptr; // 드랍할 아이템이 없는 경우
+    }
 }
