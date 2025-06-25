@@ -53,6 +53,7 @@ bool GameManager::playGame()
 			break;
 		}
 	}
+	system("cls");
 	if (choice == 1)
 	{
 		std::cout << "던전 입장중..." << endl;
