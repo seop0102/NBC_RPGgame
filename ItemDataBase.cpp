@@ -2,6 +2,10 @@
 #include <iostream>
 #include <algorithm>
 
+#include "Weapon.h"
+#include "Armor.h"
+#include "Consumable.h"
+
 ItemDataBase::ItemDataBase()
 {
     initializeItemData();
@@ -53,19 +57,18 @@ ItemTier ItemDataBase::stringToItemTier(const std::string& tierStr) const
     return ItemTier::NORMAL; // NORAML -> NORMAL 오타 수정
 }
 
-std::unique_ptr<Item> ItemDataBase::createItem(const std::string& itemName) const
+Item* ItemDataBase::createItem(const std::string& itemName) const
 {
-    const ItemData* data = getItemData(itemName);
-    if (!data)
+    auto it = nameToIndex.find(itemName);
+    if (it == nameToIndex.end())
     {
         std::cout << "아이템을 찾을 수 없습니다: " << itemName << std::endl;
         return nullptr;
     }
-
-    return createItem(nameToIndex.at(itemName));
+    return createItem(it->second);
 }
 
-std::unique_ptr<Item> ItemDataBase::createItem(int index) const
+Item* ItemDataBase::createItem(int index) const
 {
     if (index < 0 || index >= static_cast<int>(itemDataList.size()))
     {
@@ -77,15 +80,15 @@ std::unique_ptr<Item> ItemDataBase::createItem(int index) const
     ItemType type = stringToItemType(data.typeStr);
     ItemTier tier = stringToItemTier(data.tierStr);
 
-    // 아이템 타입에 따른 적절한 객체 생성 (클래스명 변경)
+    // new를 사용하여 동적 할당
     switch (type)
     {
     case ItemType::WEAPON:
-        return std::make_unique<Weapon>(data.name, tier, data.attackBonus, data.price);
+        return new Weapon(data.name, tier, data.attackBonus, data.price);
     case ItemType::ARMOR:
-        return std::make_unique<Armor>(data.name, tier, data.defenseBonus, data.maxHealthBonus, data.price);
-    case ItemType::CONSUMABLE: // EDIBLE -> CONSUMABLE 변경
-        return std::make_unique<Consumable>(data.name, tier, data.healthRecover, data.skillCharges, data.attackBonus, data.price);
+        return new Armor(data.name, tier, data.defenseBonus, data.maxHealthBonus, data.price);
+    case ItemType::CONSUMABLE:
+        return new Consumable(data.name, tier, data.healthRecover, data.skillCharges, data.attackBonus, data.price);
     default:
         return nullptr;
     }
@@ -115,73 +118,78 @@ int ItemDataBase::getItemCount() const
     return static_cast<int>(itemDataList.size());
 }
 
-std::vector<std::unique_ptr<Item>> ItemDataBase::getItemsByType(ItemType type) const
+std::vector<Item*> ItemDataBase::getItemsByType(ItemType type) const
 {
-    std::vector<std::unique_ptr<Item>> result;
+    std::vector<Item*> result;
 
     for (size_t i = 0; i < itemDataList.size(); ++i)
     {
         if (stringToItemType(itemDataList[i].typeStr) == type)
         {
-            auto item = createItem(static_cast<int>(i));
+            Item* item = createItem(static_cast<int>(i)); // 새로 생성
             if (item)
             {
-                result.push_back(std::move(item));
+                result.push_back(item);
             }
         }
     }
-
     return result;
 }
 
-std::vector<std::unique_ptr<Item>> ItemDataBase::getItemsByTier(ItemTier tier) const
+std::vector<Item*> ItemDataBase::getItemsByTier(ItemTier tier) const
 {
-    std::vector<std::unique_ptr<Item>> result;
+    std::vector<Item*> result;
 
     for (size_t i = 0; i < itemDataList.size(); ++i)
     {
         if (stringToItemTier(itemDataList[i].tierStr) == tier)
         {
-            auto item = createItem(static_cast<int>(i));
+            Item* item = createItem(static_cast<int>(i)); // 새로 생성
             if (item)
             {
-                result.push_back(std::move(item));
+                result.push_back(item);
             }
         }
     }
     return result;
 }
 
-void ItemDataBase::printAllItems() const // 함수명 수정
+void ItemDataBase::printAllItems() const
 {
     std::cout << "== 전체 아이템 목록 ==" << std::endl;
+    std::vector<Item*> allItems; // 임시로 생성된 아이템을 저장할 벡터
     for (size_t i = 0; i < itemDataList.size(); ++i)
     {
-        auto item = createItem(static_cast<int>(i));
+        Item* item = createItem(static_cast<int>(i)); // 새로 생성
         if (item)
         {
-            std::cout << "[" << i << "] " << item->getItemInfo() << std::endl; // getIteminfo -> getItemInfo
+            std::cout << "[" << i << "] " << item->getItemInfo() << std::endl;
+            allItems.push_back(item); // 임시 벡터에 추가하여 나중에 해제
         }
+    }
+    // 함수 종료 전 임시로 생성된 아이템 메모리 해제
+    for (Item* item : allItems) {
+        delete item;
     }
 }
 
-std::vector<std::unique_ptr<Item>> ItemDataBase::getShopItems(int maxPrice) const
+std::vector<Item*> ItemDataBase::getShopItems(int maxPrice) const
 {
-    std::vector<std::unique_ptr<Item>> result;
+    std::vector<Item*> result;
 
     for (size_t i = 0; i < itemDataList.size(); ++i)
     {
         if (itemDataList[i].price <= maxPrice)
         {
-            auto item = createItem(static_cast<int>(i));
+            Item* item = createItem(static_cast<int>(i)); // 새로 생성
             if (item)
             {
-                result.push_back(std::move(item));
+                result.push_back(item);
             }
         }
     }
     std::sort(result.begin(), result.end(),
-        [](const std::unique_ptr<Item>& a, const std::unique_ptr<Item>& b)
+        [](const Item* a, const Item* b)
         {
             return a->getPrice() < b->getPrice();
         });

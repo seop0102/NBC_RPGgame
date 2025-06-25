@@ -18,5 +18,6 @@ public:
 	virtual void useSkill(const std::string& skillName, Character& self, Monster& target) = 0;
 	virtual void applyPassiveSkill(Character& self) = 0;
 	virtual void showSkills() const = 0; // 스킬 목록 출력 함수
+
 	virtual std::string getSkillbyIndex(int index) const = 0;
 };
