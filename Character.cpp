@@ -430,6 +430,7 @@ void Character::initializeSkillEffect()
 	setIsAimed(false);
 	setIsHiding(false);
 	setHasIndomitableWill(false);
+	setWraithArrowDamage(0);
 
 	if (getIsShielded())
 

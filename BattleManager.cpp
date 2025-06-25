@@ -28,12 +28,16 @@ bool BattleManager::doBattle(Character* player)
 
 			player->addGold(monster->getGold()); // 몬스터 처치 시 골드 추가
 
-			if (monster->dropItem() != nullptr) {
-				std::cout << "아이템을 획득했습니다: " << monster->dropItem()->getName() << std::endl;
-				player->addItem(monster->dropItem()); // 플레이어에게 아이템 추가
+			Item* item= monster->dropItem();
+
+			if (item != nullptr) {
+				std::cout << "아이템을 획득했습니다: " << item->getName() << std::endl;
+				player->addItem(item); // 플레이어에게 아이템 추가
 			}
 
 			player->addExp(EXP); // 몬스터 처치 시 경험치 추가
+
+			player->setHealth(player->getMaxHealth());//체력회복
 
 			player->initializeSkillUsages(); //스킬 사용 횟수 초기화
 			player->initializeSkillEffect(); // 스킬 효과 제거
@@ -89,6 +93,13 @@ void BattleManager::attackMonster(Character* player, std::string skill, Monster*
 		return;
 	}
 
+	if (player->getWraithArrowDamage() > 0)
+
+	{
+		std::cout << "망령 화살이 폭발했습니다! 적에게 피해 " << player->getWraithArrowDamage() << std::endl;
+		monster->takeDamage(player->getWraithArrowDamage());
+		player->setWraithArrowDamage(0);
+	}
 
 	player->useSkill(skill, *player, *monster, crit); // 선택한 스킬 사용
 
