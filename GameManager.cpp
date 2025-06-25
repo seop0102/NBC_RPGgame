@@ -76,8 +76,8 @@ bool GameManager::playGame()
 	else if (choice == 3)
 	{
 		Shop shop("혁이네 상점");
-		TradeManager tm;
-		tm.showShopItems(player,shop);
+		TradeManager tradeManager;
+		tradeManager.showShopItems(player,shop);
 		std::cout << "구매[1], 판매[2], 나가기[3]" << endl;
 		int choose = 0;
 		while (true)
@@ -96,11 +96,11 @@ bool GameManager::playGame()
 		}
 		if (choose == 1)
 		{
-			tm.buyItem(player, shop);
+			tradeManager.buyItem(player, shop);
 		}
 		else if (choose == 2)
 		{
-			tm.sellItem(player);
+			tradeManager.sellItem(player);
 		}
 		else
 		{
