@@ -1,13 +1,11 @@
 ﻿#include "GameManager.h"
 
 int main() {
-	GameManager gameManager;
-
-	//gameManager.storyManager->startPrologue(); 
+	GameManager gameManager; 
 
 	gameManager.startGame();
 
-	gameManager.playGame();
+	while ( gameManager.playGame() ) {}
 
 	gameManager.endGame();
 

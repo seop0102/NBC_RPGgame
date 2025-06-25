@@ -30,25 +30,57 @@ void GameManager::startGame()
 	player->initializeSkillUsages();
 	player->applyPassiveSkill(*player);
 	player->displayStat();
-}
-void GameManager::playGame()
-{
-	cout << "게임을 시작합니다!" << endl;
 
-	while (true) {
-		
+}
+bool GameManager::playGame()
+{
+	cout << "┌--------------------------------------------------┐" << endl;
+	cout << "│던전탐색[1], 인벤토리[2], 상점방문[3], 게임종료[4]│" << endl;
+	cout << "└--------------------------------------------------┘" << endl;
+	int choice = 0;
+	cout << "선택 입력 대기중 : ";
+	while (true)
+	{
+		std::cin >> choice;
+		if (std::cin.fail() || choice < 1 || choice > 4)
+		{
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "잘못된 입력입니다. 다시 입력해 주세요." << std::endl;
+		}
+		else
+		{
+			break;
+		}
+	}
+	if (choice == 1)
+	{
 		if (battleManager->doBattle(player))
 		{
 			cout << "전투를 클리어 했습니다!" << endl;
 			player->displayStat();
-			//상점클래스의 오픈함수로 다시 추가
 		}
 		else
 		{
-			cout << "전투에서 패배했습니다." << endl;
-			break;
+			cout << "전투에서 패배했습니다." << endl;	
 		}
+		return true;
 	}
+	else if (choice == 2)
+	{
+		player->showInventory();
+		return true;
+	}
+	else if (choice == 3)
+	{
+		// 상점오픈
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	
 }
 void GameManager::endGame()
 {

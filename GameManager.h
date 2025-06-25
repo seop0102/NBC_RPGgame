@@ -31,7 +31,7 @@ public:
 
 	void startGame();
 
-	void playGame();
+	bool playGame();
 
 	void endGame();
 
