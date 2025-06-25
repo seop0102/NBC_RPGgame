@@ -8,10 +8,13 @@
 #include "IClass.h"
 #include "ICombatant.h"
 #include "Item.h"
+#include "Weapon.h"
+#include "Consumable.h"
 
 using namespace std;
 
 class Monster;
+class Armor;
 
 class Character : public ICombatant {
 private:
@@ -29,8 +32,8 @@ private:
 	int exp;
 	int gold;
 
-	WeaponItem* equippedWeapon; // 장착된 무기
-	ArmorItem* equippedArmor; // 장착된 방어구
+	Weapon* equippedWeapon; // 장착된 무기
+	Armor* equippedArmor; // 장착된 방어구
 
 	std::vector<Item*> inventory;
 
@@ -84,8 +87,8 @@ public:
 	void removeGold(int amount);
 
 	// 인벤토리 관련
-	void equipWeapon(WeaponItem* weapon);
-	void equipArmor(ArmorItem* armor);
+	void equipWeapon(Weapon* weapon);
+	void equipArmor(Armor* armor);
 	void useItem(int itemIndex); // 아이템 사용
 	void addItem(Item* item);
 	void removeItem(int index);

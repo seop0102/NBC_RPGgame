@@ -1,9 +1,13 @@
 #include "Character.h"
 #include "Item.h"
+#include "Weapon.h"
+#include "Armor.h"
+#include "Consumable.h"
 #include "IClass.h"
 #include "Utils.h"
 #include "Monster.h"
 #include "ICombatant.h"
+
 
 #include <iostream>
 #include <limits>
@@ -145,7 +149,7 @@ void Character::showInventory() const
 
 }
 
-void Character::equipWeapon(WeaponItem* weapon) {
+void Character::equipWeapon(Weapon* weapon) {
 	if (equippedWeapon != nullptr)
 	{
 		swap(equippedWeapon, weapon); // 기존 무기와 교체
@@ -156,7 +160,7 @@ void Character::equipWeapon(WeaponItem* weapon) {
 	}
 }
 
-void Character::equipArmor(ArmorItem* armor)
+void Character::equipArmor(Armor* armor)
 {
 	if (equippedWeapon != nullptr)
 	{
@@ -175,11 +179,11 @@ void Character::useItem(int itemindex) {
 		return;
 	}
 
-	EdibleItem* edible = dynamic_cast<EdibleItem*>(inventory[itemindex]);
+	Consumable* consumable = dynamic_cast<Consumable*>(inventory[itemindex]);
 
-	if (edible)
+	if (consumable)
 	{
-		edible->use(); // 아이템 사용
+		consumable->use(*this); // 아이템 사용
 	}
 	else
 	{
