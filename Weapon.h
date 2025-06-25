@@ -10,7 +10,7 @@ private:
 
 public:
 	// 생성자
-	Weapon(const std::string& name, ItemTier tier, int attackBonus, int price);
+	Weapon(const std::string& name, ItemTier tier, int attackBonus, int price, bool isEquipped);
 
 	//순수 가상함수
 	std::string getEffect() const override;

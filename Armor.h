@@ -8,10 +8,11 @@ class Armor:public Item
 private:
 	int defenseBonus;
 	int maxHealthBonus;
+	bool isEquipped;
 
 public:
 	//생성자
-	Armor(const std::string& name, ItemTier tier, int defenseBonus, int maxHealthBonus, int price);
+	Armor(const std::string& name, ItemTier tier, int defenseBonus, int maxHealthBonus, int price, bool isEquipped);
 
 	
 	// 순수 가상함수

@@ -97,13 +97,13 @@ Item* ItemDataBase::createItem(const std::string& itemName) const
     {
     case ItemType::WEAPON:
         // Weapon 持失切
-        return new Weapon(data->name, tier, data->attackBonus, data->price);
+        return new Weapon(data->name, tier, data->attackBonus, data->price, true);
     case ItemType::ARMOR:
         // Armor 持失切
-        return new Armor(data->name, tier, data->defenseBonus, data->maxHealthBonus, data->price);
+        return new Armor(data->name, tier, data->defenseBonus, data->maxHealthBonus, data->price, true);
     case ItemType::CONSUMABLE:
         // Consumable 持失切
-        return new Consumable(data->name, tier, data->healthRecover, data->skillCharges, data->attackBonus, data->price);
+        return new Consumable(data->name, tier, data->healthRecover, data->skillCharges, data->attackBonus, data->price, false);
     default:
         std::cerr << "Error: Unknown item type for: " << itemName << std::endl;
         return nullptr;
@@ -127,13 +127,13 @@ Item* ItemDataBase::createItem(int index) const
     {
     case ItemType::WEAPON:
         // Weapon 持失切: (name, tier, attackBonus, price)
-        return new Weapon(data->name, tier, data->attackBonus, data->price);
+        return new Weapon(data->name, tier, data->attackBonus, data->price, true);
     case ItemType::ARMOR:
         // Armor 持失切: (name, tier, defenseBonus, maxHealthBonus, price)
-        return new Armor(data->name, tier, data->defenseBonus, data->maxHealthBonus, data->price);
+        return new Armor(data->name, tier, data->defenseBonus, data->maxHealthBonus, data->price, true);
     case ItemType::CONSUMABLE:
         // Consumable 持失切: (name, tier, healthRecover, skillCharges, attackBonus, price)
-        return new Consumable(data->name, tier, data->healthRecover, data->skillCharges, data->attackBonus, data->price);
+        return new Consumable(data->name, tier, data->healthRecover, data->skillCharges, data->attackBonus, data->price, false);
     default:
         std::cerr << "Error: Unknown item type for index: " << index << std::endl;
         return nullptr;

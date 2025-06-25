@@ -59,11 +59,11 @@ Item* Shop::getSelectedItemForPurchase(int index, int maxPrice) const {
         switch (type)
         {
         case ItemType::WEAPON:
-            return new Weapon(data->name, tier, data->attackBonus, data->price);
+            return new Weapon(data->name, tier, data->attackBonus, data->price, true);
         case ItemType::ARMOR:
-            return new Armor(data->name, tier, data->defenseBonus, data->maxHealthBonus, data->price);
+            return new Armor(data->name, tier, data->defenseBonus, data->maxHealthBonus, data->price, true);
         case ItemType::CONSUMABLE:
-            return new Consumable(data->name, tier, data->healthRecover, data->skillCharges, data->attackBonus, data->price);
+            return new Consumable(data->name, tier, data->healthRecover, data->skillCharges, data->attackBonus, data->price, false);
         default:
             std::cout << "알 수 없는 아이템 타입입니다: " << data->typeStr << std::endl;
             return nullptr;

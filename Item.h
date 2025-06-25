@@ -21,7 +21,7 @@ protected: // private>protected 로 해서 상속가능하게끔
 
 public:
 	//생성자
-	Item(const std::string& name, ItemTier tier, int price);
+	Item(const std::string& name, ItemTier tier, int price, bool isEquipped);
 
 	// 가상 소멸자
 	virtual~Item() = default;

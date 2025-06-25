@@ -3,8 +3,8 @@
 
 // »ý¼ºÀÚ
 Consumable::Consumable(const std::string& name, ItemTier tier, int healthRecover,
-    int skillCharges, int attackBonus, int price)
-    : Item(name, tier, price), healthRecover(healthRecover), skillCharges(skillCharges), attackBonus(attackBonus)
+    int skillCharges, int attackBonus, int price, bool isEquipped)
+    : Item(name, tier, price, isEquipped), healthRecover(healthRecover), skillCharges(skillCharges), attackBonus(attackBonus)
 {
 }
 

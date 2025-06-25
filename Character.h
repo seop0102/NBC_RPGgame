@@ -91,7 +91,8 @@ public:
 	void showInventory() const; // 인벤토리 출력
 
 	// 트레이드매니저에서 인벤토리 접근할 수 있는 getter
-	const std::vector<Item*>& getInventory() const { return inventory; } 
+	const std::vector<Item*>& getInventory() const { return inventory; }
+	Item* GetItemByIndex(int index) { return inventory[index]; }
 	Weapon* getEquippedWeapon() const { return equippedWeapon; }
 	Armor* getEquippedArmor() const { return equippedArmor; }
 

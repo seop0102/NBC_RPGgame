@@ -3,8 +3,8 @@
 #include "Character.h"
 
 // »ý¼ºÀÚ
-Weapon::Weapon(const std::string& name, ItemTier tier, int attackBonus, int price)
-    : Item(name, tier, price), attackBonus(attackBonus)
+Weapon::Weapon(const std::string& name, ItemTier tier, int attackBonus, int price, bool isEquipped)
+    : Item(name, tier, price, isEquipped), attackBonus(attackBonus)
 {
 }
 

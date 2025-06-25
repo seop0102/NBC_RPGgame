@@ -5,8 +5,8 @@
 // #include "Character.h"
 
 // »ý¼ºÀÚ
-Item::Item(const std::string& name, ItemTier tier, int price)
-    : name(name), tier(tier), price(price), isEquipped(false)
+Item::Item(const std::string& name, ItemTier tier, int price, bool isEquipped)
+    : name(name), tier(tier), price(price)
 {
 }
 

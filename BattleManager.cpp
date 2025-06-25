@@ -100,7 +100,16 @@ std::string BattleManager::playerchoice(Character* player)
 				std::cout << "사용할 아이템을 선택하세요" << std::endl;
 				std::cin >> choice;
 
-				player->useItem(choice);
+				Item* item = player->GetItemByIndex(choice);
+
+				if (item != nullptr && item->getIsEquipped() == false)
+				{
+					item->use(*player);
+				}
+				else
+				{
+					std::cout << "사용할 수 없는 아이템이거나 잘못된 선택 입니다" << std::endl;
+				}
 			}
 			else
 			{

@@ -12,7 +12,7 @@ private:
 public:
     // 생성자
     Consumable(const std::string& name, ItemTier tier, int healthRecover,
-        int skillCharges, int attackBonus, int price);
+        int skillCharges, int attackBonus, int price, bool isEquipped);
 
     // 순수 가상 함수 구현
     std::string getEffect() const override;

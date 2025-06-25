@@ -2,8 +2,8 @@
 #include <iostream>
 
 // »ý¼ºÀÚ
-Armor::Armor(const std::string& name, ItemTier tier, int defenseBonus, int maxHealthBonus, int price)
-    : Item(name, tier, price), defenseBonus(defenseBonus), maxHealthBonus(maxHealthBonus)
+Armor::Armor(const std::string& name, ItemTier tier, int defenseBonus, int maxHealthBonus, int price, bool isEquipped)
+    : Item(name, tier, price, isEquipped), defenseBonus(defenseBonus), maxHealthBonus(maxHealthBonus)
 {
 }
 
