@@ -8,9 +8,7 @@
 #include "Monster.h"
 #include "ICombatant.h"
 
-
 #include <iostream>
-#include <limits>
 #include <algorithm>
 #include <map>
 
@@ -29,6 +27,33 @@ Character::Character(std::string name, IClass* selectedClass)
 	equippedWeapon(nullptr), equippedArmor(nullptr)
 {
 	characterClass = selectedClass;
+	initializeSkillUsages();
+}
+
+Character::~Character() {
+	// 1. 장착된 무기가 있다면 해제
+	if (equippedWeapon != nullptr) {
+		delete equippedWeapon;
+		equippedWeapon = nullptr;
+	}
+	// 2. 장착된 방어구가 있다면 해제
+	if (equippedArmor != nullptr) {
+		delete equippedArmor;
+		equippedArmor = nullptr;
+	}
+	// 3. 인벤토리 내의 모든 아이템을 해제
+	for (Item* item : inventory) {
+		if (item != nullptr) {
+			delete item;
+		}
+	}
+	inventory.clear();
+	// 4. 캐릭터의 직업 객체를 해제
+	if (characterClass != nullptr) {
+		delete characterClass;
+		characterClass = nullptr;
+	}
+	std::cout << name << " 캐릭터가 소멸되었습니다. 관련 메모리가 해제되었습니다." << std::endl;
 }
 
 void Character::displayStat()
@@ -46,26 +71,31 @@ void Character::displayStat()
 void Character::levelUp()
 {
 	const int MAX_LEVEL = 10;
-	const int EXP_TO_NEXT_LEVEL = level * 100;
 
 	if (level >= MAX_LEVEL) {
 		std::cout << "10레벨에 도달했습니다!" << std::endl;
 		return;
 	}
 
-	if (exp >= EXP_TO_NEXT_LEVEL) {
-		level++;
-		exp -= EXP_TO_NEXT_LEVEL;
+	while (level < MAX_LEVEL) {
+		const int EXP_TO_NEXT_LEVEL = level * 100; // *현재* 레벨을 기반으로 계산
 
-		maxHealth += 20; // 최대 체력 증가
-		health = maxHealth; // 체력 회복
-		attack += 5; // 공격력 증가
+		if (exp >= EXP_TO_NEXT_LEVEL) {
+			level++;
+			exp -= EXP_TO_NEXT_LEVEL;
 
-		std::cout << "레벨 업 :" << level << "이(가) 되었습니다." << std::endl;
-		std::cout << "최대 체력 +20, 공격력 +5 증가" << std::endl;
-	}
-	else {
-		std::cout << "경험치가 부족합니다. 다음 레벨업 까지 " << (EXP_TO_NEXT_LEVEL - exp) << "경험치가 더 필요합니다." << std::endl;
+			maxHealth += 20;
+			health = maxHealth;
+			attack += 5;
+
+			std::cout << "레벨 업 :" << level << "이(가) 되었습니다." << std::endl;
+			std::cout << "최대 체력 +20, 공격력 +5 증가" << std::endl;
+		}
+		else {
+			// *현재* 레벨에 충분한 경험치가 없으면 루프 종료
+			std::cout << "경험치가 부족합니다. 다음 레벨업 까지 " << (EXP_TO_NEXT_LEVEL - exp) << "경험치가 더 필요합니다." << std::endl;
+			break;
+		}
 	}
 }
 
@@ -107,31 +137,52 @@ void Character::removeGold(int amount)
 }
 
 // 아이템 추가 함수
-void Character::addItem(Item* item)
+void Character::addItem(Item* newItem)
 {
-	if (inventory.size() >= 10) { // 인벤토리 최대 10개 아이템
-		showInventory();
-		std::cout << "인벤토리가 가득 찼습니다. 다른 아이템을 버리시겠습니까?" << std::endl;
-
-		//선택지 추가 예정
-		int index = 0;
-		item; // 아이템 정보 출력
-		swap(item, inventory[index]); // 마지막 아이템과 교체
-
-		delete item;
-
+	if (!newItem) {
+		std::cout << "추가할 아이템이 유효하지 않습니다." << std::endl;
+		return;
 	}
 
-	inventory.push_back(item);
-	std::cout << item->getName() << "을(를) 인벤토리에 추가했습니다." << std::endl;
+	if (inventory.size() >= 10) { // 인벤토리 최대 10개 아이템
+		showInventory();
+		std::cout << "인벤토리가 가득 찼습니다. " << newItem->getName() << "을(를) 획득하려면 기존 아이템을 버려야 합니다." << std::endl;
+		std::cout << "어떤 아이템을 버리시겠습니까? (0-" << inventory.size() - 1 << ", 취소: -1): ";
+
+		int choice;
+		while (!(std::cin >> choice) || (choice < -1 || choice >= inventory.size())) {
+			std::cout << "잘못된 입력입니다. 다시 입력해주세요 (0-" << inventory.size() - 1 << ", 취소: -1): ";
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+
+		if (choice >= 0 && choice < inventory.size()) {
+			Item* oldItem = inventory[choice]; // 버릴 아이템 포인터 저장
+			inventory[choice] = newItem;        // 새 아이템으로 교체 (포인터 할당)
+			std::cout << oldItem->getName() << "을(를) 버리고 " << newItem->getName() << "을(를) 획득했습니다." << std::endl;
+			delete oldItem; // 버려진 아이템 메모리 해제
+		}
+		else { // 취소를 선택한 경우
+			std::cout << newItem->getName() << " 획득을 취소했습니다." << std::endl;
+			delete newItem;
+		}
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		return; // 아이템을 추가했든 안 했든 함수 종료
+	}
+
+	// 인벤토리가 가득 차지 않은 경우 아이템 추가
+	inventory.push_back(newItem);
+	std::cout << newItem->getName() << "을(를) 인벤토리에 추가했습니다." << std::endl;
 }
 
 // 아이템 제거 함수
 void Character::removeItem(int index)
 {
 	if (index >= 0 && index < inventory.size()) {
-		std::cout << inventory[index]->getName() << "을(를) 인벤토리에서 제거했습니다." << std::endl;
-		inventory.erase(inventory.begin() + index);
+		Item* itemToRemove = inventory[index]; 
+		std::cout << itemToRemove->getName() << "을(를) 인벤토리에서 제거했습니다." << std::endl;
+		inventory.erase(inventory.begin() + index); 
+		delete itemToRemove;
 	}
 	else {
 		std::cout << "잘못된 아이템 인덱스입니다." << std::endl;
@@ -140,62 +191,151 @@ void Character::removeItem(int index)
 
 void Character::showInventory() const
 {
-	cout << "인벤토리 정보" << endl;
-	for (int i = 0; i < inventory.size(); i++)
-	{
-		cout << i << ". " << inventory[i]->getName() << " [가격 : " << inventory[i]->getPrice()<< "gold";
-		cout << endl;
+	std::cout << "-------- 인벤토리 --------" << std::endl;
+	if (inventory.empty()) {
+		std::cout << "인벤토리가 비어 있습니다." << std::endl;
 	}
+	else {
+		for (size_t i = 0; i < inventory.size(); ++i) { // size_t 사용
+			std::cout << "[" << i << "] " << inventory[i]->getName();
 
+			Weapon* weapon = dynamic_cast<Weapon*>(inventory[i]);
+			if (weapon) std::cout << " (공격력: " << weapon->getAttackBonus() << ")";
+			Armor* armor = dynamic_cast<Armor*>(inventory[i]);
+			if (armor) std::cout << " (방어력: " << armor->getDefenseBonus() << ", 최대 체력: " << armor->getMaxHealthBonus() << ")";
+			Consumable* consumable = dynamic_cast<Consumable*>(inventory[i]);
+			if (consumable) {
+				if (consumable->getHealthRecover() > 0) std::cout << " (체력 회복: " << consumable->getHealthRecover() << ")";
+				if (consumable->getAttackBonus() > 0) std::cout << " (공격력 증가: " << consumable->getAttackBonus() << ")";
+				if (consumable->getSkillCharges() > 0) std::cout << " (스킬 충전: " << consumable->getSkillCharges() << ")";
+			}
+
+			std::cout << std::endl;
+		}
+	}
+	std::cout << "--------------------------" << std::endl;
 }
 
-void Character::equipWeapon(Weapon* weapon) {
-	if (equippedWeapon != nullptr)
-	{
-		swap(equippedWeapon, weapon); // 기존 무기와 교체
+// 무기 장착
+void Character::equipWeapon(Weapon* newWeapon) {
+	if (!newWeapon) {
+		std::cout << "유효하지 않은 무기입니다." << std::endl;
+		return;
 	}
-	else
-	{
-		equippedWeapon = weapon; // 무기 장착
-	}
-}
 
-void Character::equipArmor(Armor* armor)
+	// 1. 기존에 장착된 무기가 있다면 인벤토리로 돌려보냄
+	if (equippedWeapon != nullptr) {
+		// 기존 무기의 스탯 보너스를 캐릭터 스탯에서 제거
+		attack -= equippedWeapon->getAttackBonus();
+		equippedWeapon->setEquipped(false);
+		inventory.push_back(equippedWeapon);
+		std::cout << equippedWeapon->getName() << "을(를) 인벤토리에 되돌렸습니다." << std::endl;
+	}
+
+	// 2. 새 무기를 장착하고 스탯을 조정
+	equippedWeapon = newWeapon;
+	equippedWeapon->setEquipped(true);
+	// 새 무기의 스탯 보너스를 캐릭터 스탯에 추가
+	attack += newWeapon->getAttackBonus();
+	std::cout << newWeapon->getName() << "을(를) 장착했습니다." << std::endl;
+
+}
+void Character::equipArmor(Armor* newArmor)
 {
-	if (equippedWeapon != nullptr)
-	{
-		swap(equippedArmor, armor); // 기존 방어구와 교체
+	if (!newArmor) {
+		std::cout << "유효하지 않은 방어구입니다." << std::endl;
+		return;
 	}
-	else
-	{
-		equippedArmor = armor; // 방어구 장착
+
+	// 1. 기존에 장착된 방어구가 있다면 인벤토리로 돌려보내기
+	if (equippedArmor != nullptr) {
+		defense -= equippedArmor->getDefenseBonus();
+		maxHealth -= equippedArmor->getMaxHealthBonus();
+		equippedArmor->setEquipped(false);
+		inventory.push_back(equippedArmor);
+		std::cout << equippedArmor->getName() << "을(를) 인벤토리에 되돌렸습니다." << std::endl;
 	}
+
+	// 2. 새 방어구를 장착하고 스탯을 조정
+	equippedArmor = newArmor;
+	equippedArmor->setEquipped(true);
+	maxHealth += newArmor->getMaxHealthBonus();
+	defense += newArmor->getDefenseBonus();
+	std::cout << newArmor->getName() << "을(를) 장착했습니다." << std::endl;
 }
 
-void Character::useItem(int itemindex) {
-	if (inventory.empty() || itemindex < 0 || itemindex >= inventory.size())
+
+void Character::useItem(int itemIndex) {
+	if (inventory.empty() || itemIndex < 0 || itemIndex >= inventory.size())
 	{
 		std::cout << "잘못된 아이템 인덱스입니다." << std::endl;
 		return;
 	}
 
-	Consumable* consumable = dynamic_cast<Consumable*>(inventory[itemindex]);
+	Item* selectedItem = inventory[itemIndex];
 
+	Consumable* consumable = dynamic_cast<Consumable*>(selectedItem);
 	if (consumable)
 	{
-		consumable->use(*this); // 아이템 사용
-	}
-	else
-	{
-		std::cout << "사용할 수 없는 아이템입니다." << std::endl;
+		// 소모품 사용 로직
+		// 현재 Consumable::use 함수 내부의 TODO 주석을 해제하고 Character에 메서드를 추가해야 합니다.
+		// 예: character.heal(healthRecover); character.addSkillCharges(skillCharges); etc.
+		if (consumable->getHealthRecover() > 0) {
+			health += consumable->getHealthRecover();
+			if (health > maxHealth) health = maxHealth;
+			std::cout << "체력이 " << consumable->getHealthRecover() << " 회복되었습니다. 현재 체력: " << health << std::endl;
+		}
+		if (consumable->getSkillCharges() > 0) {
+			// 모든 스킬 사용 횟수를 회복한다고 가정
+			initializeSkillUsages(); // 모든 스킬을 초기화하는 것으로 임시 구현
+			std::cout << "모든 스킬 사용 횟수가 회복되었습니다." << std::endl;
+		}
+		if (consumable->getAttackBonus() > 0) {
+			attack += consumable->getAttackBonus();
+			std::cout << "임시 공격력이 " << consumable->getAttackBonus() << " 증가했습니다." << std::endl;
+			// TODO: 임시 공격력 증가 효과를 관리하는 로직 (턴 종료 시 감소 등) 필요
+		}
+
+		std::cout << selectedItem->getName() << "을(를) 사용했습니다!" << std::endl;
+		removeItem(itemIndex); // 소모품은 사용 후 제거
 		return;
-
 	}
 
-	removeItem(itemindex); // 아이템 사용 후 인벤토리에서 제거
+	Weapon* weapon = dynamic_cast<Weapon*>(selectedItem);
+	if (weapon) {
+		std::cout << weapon->getName() << "을(를) 장착하시겠습니까? (y/n): ";
+		char choice;
+		std::cin >> choice;
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		if (tolower(choice) == 'y') {
+			equipWeapon(weapon);
+			Item* itemToEraseFromInventory = inventory[itemIndex];
+			inventory.erase(inventory.begin() + itemIndex); // 인벤토리에서 장착된 아이템 제거
+		}
+		else {
+			std::cout << "무기 장착을 취소했습니다." << std::endl;
+		}
+		return;
+	}
+
+	Armor* armor = dynamic_cast<Armor*>(selectedItem);
+	if (armor) {
+		std::cout << armor->getName() << "을(를) 장착하시겠습니까? (y/n): ";
+		char choice;
+		std::cin >> choice;
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		if (tolower(choice) == 'y') {
+			equipArmor(armor);
+			inventory.erase(inventory.begin() + itemIndex); // 인벤토리에서 장착된 아이템 제거
+		}
+		else {
+			std::cout << "방어구 장착을 취소했습니다." << std::endl;
+		}
+		return;
+	}
+
+	std::cout << "사용할 수 없는 아이템입니다." << std::endl;
 }
-
-
 
 std::vector<std::string> Character::getActiveSkills() const {
 	if (characterClass) return characterClass->getActiveSkills();
@@ -238,7 +378,6 @@ void Character::initializeSkillUsages() {
 
 	// 스킬 이름과 초기 사용 횟수를 직접 문자열 키로 설정
 	// 각 직업의 스킬을 여기에 명시적으로 추가합니다.
-	// 기존 enum 값 대신 실제 스킬 이름을 사용합니다.
 
 	// 공통 스킬
 	skillUsages["기본 공격"] = 99; // 무제한

@@ -9,7 +9,7 @@ bool BattleManager::doBattle(Character* player)
 
 	if (player->getLevel() >= 10) {
 
-		cout << "레벨 10 이상! 보스 몬스터가 등장합니다!" << endl;
+		std::cout << "레벨 10 이상! 보스 몬스터가 등장합니다!" << std::endl;
 		monster->setHealth(int(monster->getHealth() * 1.5)); // 레벨 10 이상일 때 보스 몬스터 등장
 		monster->setAttack(int(monster->getAttack() * 1.5)); // 레벨 10 이상일 때 보스 몬스터 등장
 
@@ -62,9 +62,9 @@ void BattleManager::playerchoice(Character* player, Monster* monster)
 
 	int choice = 0;
 
-	cout << "사용할 스킬을 선택하세요:" << endl;
+	std::cout << "사용할 스킬을 선택하세요:" << std::endl;
 
-	cin >> choice;
+	std::cin >> choice;
 
 	Cclass->useSkill((Cclass->getSkillbyIndex(choice)), *player, *monster); // 선택한 스킬 사용
 }

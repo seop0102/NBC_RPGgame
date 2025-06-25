@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "IClass.h"
+#include "Monster.h"
 #include "Character.h"
 
 
@@ -16,7 +17,7 @@ public:
 	void useSkill(const std::string& skillName, Character& self, Monster& target) override;
 	void applyPassiveSkill(Character& self) override;
 	void showSkills() const override;
-	string getSkillbyIndex(int index) const override { return activeSkills[index-1]; } // 스킬 인덱스 반환 함수 (필요시 구현)
+	std::string getSkillbyIndex(int index) const override { return activeSkills[index-1]; } // 스킬 인덱스 반환 함수 (필요시 구현)
 
 private:
 	// SkillType 대신 std::string을 저장하도록 변경

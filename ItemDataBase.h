@@ -4,8 +4,8 @@
 #include "Armor.h"
 #include "Consumable.h"
 #include <vector>
-#include <memory>
 #include <unordered_map>
+#include <limits>
 // Item 초안 시트 데이터와 같게해서 만들었습니다
 struct ItemData
 {
@@ -39,18 +39,22 @@ public:
     ItemDataBase();
     //시트 데이터 초기화
     void initializeItemData();
+
     // 아이템 생성 함수
-    std::unique_ptr<Item> createItem(const std::string& itemName) const;
-    std::unique_ptr<Item> createItem(int index) const;
+    Item* createItem(const std::string& itemName) const;
+    Item* createItem(int index) const;
+
     //아이템 데이터 조회
     const ItemData* getItemData(const std::string& itemName) const;
     const ItemData* getItemData(int index) const;
     int getItemCount() const;
+
     //특정 타입의 아이템들 가져오는 코드
-    std::vector<std::unique_ptr<Item>> getItemsByType(ItemType type) const;
-    std::vector<std::unique_ptr<Item>> getItemsByTier(ItemTier tier) const;
+    std::vector<Item*> getItemsByType(ItemType type) const;
+    std::vector<Item*> getItemsByTier(ItemTier tier) const;
+
     // 전체 아이템 목록 출력(디버깅용)
     void printAllItems() const; // 오타 수정: pritntAllItems -> printAllItems
     // 상점용
-    std::vector<std::unique_ptr<Item>> getShopItems(int maxPrice = INT_MAX) const;
+    std::vector<Item*> getShopItems(int maxPrice = INT_MAX) const;
 };

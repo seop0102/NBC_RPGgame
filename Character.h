@@ -3,15 +3,13 @@
 #include<string>
 #include<vector>
 #include<iostream>
-#include<map> // 연관 컨테이너 Key, Value 
-
-#include "IClass.h"
-#include "ICombatant.h"
+#include<map> 
 #include "Item.h"
 #include "Weapon.h"
 #include "Consumable.h"
+#include "ICombatant.h"
 
-using namespace std;
+#include "IClass.h"
 
 class Monster;
 class Armor;
@@ -32,7 +30,7 @@ private:
 	int exp;
 	int gold;
 
-	Weapon* equippedWeapon; // 장착된 무기
+	Weapon* equippedWeapon;
 	Armor* equippedArmor; // 장착된 방어구
 
 	std::vector<Item*> inventory;
@@ -58,12 +56,14 @@ private:
 
 public:
 	Character(std::string name, IClass* selectedClass);
+	virtual ~Character();
+	IClass* getCharacterClass() const { return characterClass; }
 
 	// ICombatant 인터페이스
 	void takeDamage(int damage) override;
 	int getAttack() const override { return attack; }
 	int getHealth() const override { return health; }
-	string getName() const override { return name; }
+	std::string getName() const override { return name; }
 	int getDefense() const { return defense; } // 방어력 반환
 	int getDodgeChance() const { return dodgeChance; } // 회피율 반환
 
@@ -71,9 +71,6 @@ public:
 	void useSkill(const std::string& skillName, Character& self, Monster& target);
 	void applyPassiveSkill(Character& self);
 	std::string getClassName() const;
-
-	//
-	IClass* getCharacterClass() const { return characterClass; }
 
 	bool isAlive() const { return health > 0; } // 살았는지 죽었는지 확인
 
@@ -93,6 +90,11 @@ public:
 	void addItem(Item* item);
 	void removeItem(int index);
 	void showInventory() const; // 인벤토리 출력
+
+	// 트레이드매니저에서 인벤토리 접근할 수 있는 getter
+	const std::vector<Item*>& getInventory() const { return inventory; } 
+	Weapon* getEquippedWeapon() const { return equippedWeapon; }
+	Armor* getEquippedArmor() const { return equippedArmor; }
 
 	// 스킬 사용 횟수
 	void initializeSkillUsages();
@@ -123,7 +125,6 @@ public:
 	int getGold() const { return gold; }
 	int getHitChance() const { return hitChance; }
 	int getCriticalChance() const { return criticalChance; }
-	vector<Item*> getInventory() { return inventory; }
 
 	// 세터 함수
 	void setHealth(int newHealth) { health = newHealth; }
@@ -133,6 +134,6 @@ public:
 	void setCriticalChance(int chance) { criticalChance = chance; }
 	void setHitChance(int chance) { hitChance = chance; }
 	void setDodgeChance(int chance) { dodgeChance = chance; }
-	void setGold(int newGold) { gold = newGold; } // 도적 스킬 등에서 필요
+	void setGold(int newGold) { gold = newGold; } // 도적 스킬에서 필요
 
 };
