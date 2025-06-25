@@ -57,4 +57,6 @@ public:
     void printAllItems() const; // 오타 수정: pritntAllItems -> printAllItems
     // 상점용
     std::vector<Item*> getShopItems(int maxPrice = INT_MAX) const;
+
+    Item* getRandomItem() const; // 랜덤 아이템 생성 함수(몬스터 드랍용)
 };

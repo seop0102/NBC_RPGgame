@@ -196,3 +196,18 @@ std::vector<Item*> ItemDataBase::getShopItems(int maxPrice) const
 
     return result;
 }
+
+Item* ItemDataBase::getRandomItem() const
+{
+    int chance = rand() % 100;
+
+    if (chance < 30)
+    {
+        int itemIndex = std::rand() % itemDataList.size();
+        return createItem(itemIndex);
+    }
+    else
+    {
+        return nullptr; // 30% 확률로 아이템을 드랍하지 않음
+    }
+}
