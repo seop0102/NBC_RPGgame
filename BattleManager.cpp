@@ -18,7 +18,7 @@ bool BattleManager::doBattle(Character* player)
 	{
 
 
-		std::cout << "몬스터 등장!! 이름:  " << monster->getName() << " 공격력: " << monster->getAttack() << " 체력: " << monster->getHealth() << std::endl;
+		std::cout << "몬스터 등장!! 이름: " << monster->getName() << " 공격력: " << monster->getAttack() << " 체력: " << monster->getHealth() << std::endl;
 
 		//전투 구현
 		// 플레이어가 스킬을 선택하는 함수 호출
@@ -67,17 +67,58 @@ bool BattleManager::doBattle(Character* player)
 
 std::string BattleManager::playerchoice(Character* player)
 {
-	IClass* Cclass = player->getCharacterClass();
+	while (true)
+	
+	{
+		IClass* Cclass = player->getCharacterClass();
 
-	Cclass->showSkills(); // 캐릭터 클래스의 스킬 목록 출력
+		int ChoiceSize = Cclass->getActiveSkills().size() + 1;
 
-	int choice = 0;
+		Cclass->showSkills(); // 캐릭터 클래스의 스킬 목록 출력
 
-	std::cout << "사용할 스킬을 선택하세요:" << std::endl;
+		std::cout << ChoiceSize << " 아이템 사용하기" << std::endl;
 
-	std::cin >> choice;
+		int choice = 0;
 
-	return Cclass->getSkillbyIndex(choice);
+		std::cout << "번호를 입력해 선택하세요:" << std::endl;
+
+		std::cin >> choice;
+
+		if (choice > 0 && choice < ChoiceSize)
+
+		{
+			return Cclass->getSkillbyIndex(choice);
+			
+		}
+		else if(choice == ChoiceSize)
+
+		{
+			player->showInventory();
+			if ((player->getInventory()).empty() != true)
+
+			{
+				std::cout << "사용할 아이템을 선택하세요" << std::endl;
+				std::cin >> choice;
+
+				player->useItem(choice);
+			}
+			else
+			{
+			}
+		}
+
+		else
+		
+		{
+			std::cout << "잘못된 입력입니다 다시 입력해 주세요." << std::endl;
+		}
+
+		
+	}
+}
+
+void BattleManager::UseItem(Character* player)
+{
 }
 
 void BattleManager::attackMonster(Character* player, std::string skill, Monster* monster)

@@ -27,6 +27,8 @@ public:
 
 	std::string playerchoice(Character* player); //플레이어가 스킬을 선택하는 함수
 
+	void UseItem(Character* player);
+
 	void attackMonster(Character* player, std::string skill, Monster* monster);
 
 	void attackPlayer(Character* player, Monster* monster);
