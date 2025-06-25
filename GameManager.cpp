@@ -75,7 +75,38 @@ bool GameManager::playGame()
 	}
 	else if (choice == 3)
 	{
-		// 상점오픈
+		Shop shop("혁이네 상점");
+		TradeManager tm;
+		tm.showShopItems(player,shop);
+		std::cout << "구매[1], 판매[2], 나가기[3]" << endl;
+		int choose = 0;
+		while (true)
+		{
+			std::cin >> choose;
+			if (std::cin.fail() || choice < 1 || choice > 3)
+			{
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cout << "잘못된 입력입니다. 다시 입력해 주세요." << std::endl;
+			}
+			else
+			{
+				break;
+			}
+		}
+		if (choose == 1)
+		{
+			tm.buyItem(player, shop);
+		}
+		else if (choose == 2)
+		{
+			tm.sellItem(player);
+		}
+		else
+		{
+			//cout 상점닫기
+		}
+
 		return true;
 	}
 	else

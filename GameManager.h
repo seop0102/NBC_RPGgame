@@ -9,6 +9,7 @@
 #include "Warrior.h"
 #include "Monster.h"
 #include "TradeManager.h"
+#include "Shop.h"
 
 using namespace std;
 
