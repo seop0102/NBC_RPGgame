@@ -1,4 +1,4 @@
-#include "BattleManager.h"
+ï»¿#include "BattleManager.h"
 
 bool BattleManager::doBattle(Character* player)
 {
@@ -8,9 +8,9 @@ bool BattleManager::doBattle(Character* player)
 
 	if (player->getLevel() >= 10) {
 
-		std::cout << "·¹º§ 10 ÀÌ»ó! º¸½º ¸ó½ºÅÍ°¡ µîÀåÇÕ´Ï´Ù!" << std::endl;
-		monster->setHealth(int(monster->getHealth() * 1.5)); // ·¹º§ 10 ÀÌ»óÀÏ ¶§ º¸½º ¸ó½ºÅÍ µîÀå
-		monster->setAttack(int(monster->getAttack() * 1.5)); // ·¹º§ 10 ÀÌ»óÀÏ ¶§ º¸½º ¸ó½ºÅÍ µîÀå
+		std::cout << "ë ˆë²¨ 10 ì´ìƒ! ë³´ìŠ¤ ëª¬ìŠ¤í„°ê°€ ë“±ì¥í•©ë‹ˆë‹¤!" << std::endl;
+		monster->setHealth(int(monster->getHealth() * 1.5)); // ë ˆë²¨ 10 ì´ìƒì¼ ë•Œ ë³´ìŠ¤ ëª¬ìŠ¤í„° ë“±ì¥
+		monster->setAttack(int(monster->getAttack() * 1.5)); // ë ˆë²¨ 10 ì´ìƒì¼ ë•Œ ë³´ìŠ¤ ëª¬ìŠ¤í„° ë“±ì¥
 
 	}
 
@@ -18,48 +18,50 @@ bool BattleManager::doBattle(Character* player)
 	{
 
 
-		std::cout << "¸ó½ºÅÍ µîÀå!! ÀÌ¸§: " << monster->getName() << " °ø°İ·Â: " << monster->getAttack() << " Ã¼·Â: " << monster->getHealth() << std::endl;
+		std::cout << "ëª¬ìŠ¤í„° ì •ë³´ - ì´ë¦„:  " << monster->getName() << " ê³µê²©ë ¥: " << monster->getAttack() << " ì²´ë ¥: " << monster->getHealth() << std::endl;
 
-		//ÀüÅõ ±¸Çö
-		// ÇÃ·¹ÀÌ¾î°¡ ½ºÅ³À» ¼±ÅÃÇÏ´Â ÇÔ¼ö È£Ãâ
+		//ì „íˆ¬ êµ¬í˜„
+		// í”Œë ˆì´ì–´ê°€ ìŠ¤í‚¬ì„ ì„ íƒí•˜ëŠ” í•¨ìˆ˜ í˜¸ì¶œ
 		attackMonster(player, playerchoice(player), monster);
 
 		if (monster->getHealth() <= 0) {
 
-			std::cout << "¸ó½ºÅÍ¸¦ Ã³Ä¡Çß½À´Ï´Ù!" << std::endl;
+			std::cout << "ëª¬ìŠ¤í„°ë¥¼ ì²˜ì¹˜í–ˆìŠµë‹ˆë‹¤!" << std::endl;
 
-			player->addGold(monster->getGold()); // ¸ó½ºÅÍ Ã³Ä¡ ½Ã °ñµå Ãß°¡
+			player->addGold(monster->getGold()); // ëª¬ìŠ¤í„° ì²˜ì¹˜ ì‹œ ê³¨ë“œ ì¶”ê°€
 
 			Item* item= monster->dropItem();
 
 			if (item != nullptr) {
-				std::cout << "¾ÆÀÌÅÛÀ» È¹µæÇß½À´Ï´Ù: " << item->getName() << std::endl;
-				player->addItem(item); // ÇÃ·¹ÀÌ¾î¿¡°Ô ¾ÆÀÌÅÛ Ãß°¡
+				std::cout << "ì•„ì´í…œì„ íšë“í–ˆìŠµë‹ˆë‹¤: " << item->getName() << std::endl;
+				player->addItem(item); // í”Œë ˆì´ì–´ì—ê²Œ ì•„ì´í…œ ì¶”ê°€
 			}
 
-			player->addExp(EXP); // ¸ó½ºÅÍ Ã³Ä¡ ½Ã °æÇèÄ¡ Ãß°¡
+			player->addExp(EXP); // ëª¬ìŠ¤í„° ì²˜ì¹˜ ì‹œ ê²½í—˜ì¹˜ ì¶”ê°€
 
-			player->setHealth(player->getMaxHealth());//Ã¼·ÂÈ¸º¹
+			player->setHealth(player->getMaxHealth());//ì²´ë ¥íšŒë³µ
 
-			player->initializeSkillUsages(); //½ºÅ³ »ç¿ë È½¼ö ÃÊ±âÈ­
-			player->initializeSkillEffect(); // ½ºÅ³ È¿°ú Á¦°Å
+			player->initializeSkillUsages(); //ìŠ¤í‚¬ ì‚¬ìš© íšŸìˆ˜ ì´ˆê¸°í™”
+			player->initializeSkillEffect(); // ìŠ¤í‚¬ íš¨ê³¼ ì œê±°
 
 			delete monster;
 
-			return true; // ÀüÅõ Å¬¸®¾î
+			return true; // ì „íˆ¬ í´ë¦¬ì–´
 			break;
 		}
 
-		player->takeDamage(monster->getAttack()); // ¸ó½ºÅÍÀÇ °ø°İÀ¸·Î ÇÃ·¹ÀÌ¾î ÇÇÇØ
+		player->takeDamage(monster->getAttack()); // ëª¬ìŠ¤í„°ì˜ ê³µê²©ìœ¼ë¡œ í”Œë ˆì´ì–´ í”¼í•´
+		std::cout << monster->getName() << "ì—ê²Œ" << monster->getAttack() << "ì˜ í”¼í•´ë¥¼ ë°›ì•˜ìŠµë‹ˆë‹¤." << std::endl;
+		std::cout << player->getName() << "ì˜ ë‚¨ì€ ì²´ë ¥ " << player->getHealth() << std::endl;
 
 		player->displayStat();
 
 		if (player->getHealth() <= 0) {
-			std::cout << "ÇÃ·¹ÀÌ¾î°¡ ¾²·¯Á³½À´Ï´Ù!" << std::endl;
+			std::cout << "í”Œë ˆì´ì–´ê°€ ì“°ëŸ¬ì¡ŒìŠµë‹ˆë‹¤!" << std::endl;
 
 			delete monster;
 
-			return false; // ÀüÅõ ½ÇÆĞ ÀÌ ÈÄ °ÔÀÓÁ¾·á ÇÔ¼ö ºÎ¸£±â
+			return false; // ì „íˆ¬ ì‹¤íŒ¨ ì´ í›„ ê²Œì„ì¢…ë£Œ í•¨ìˆ˜ ë¶€ë¥´ê¸°
 			break;
 		}
 	}
@@ -74,30 +76,34 @@ std::string BattleManager::playerchoice(Character* player)
 
 		int ChoiceSize = Cclass->getActiveSkills().size() + 1;
 
-		Cclass->showSkills(); // Ä³¸¯ÅÍ Å¬·¡½ºÀÇ ½ºÅ³ ¸ñ·Ï Ãâ·Â
+		Cclass->showSkills(); // ìºë¦­í„° í´ë˜ìŠ¤ì˜ ìŠ¤í‚¬ ëª©ë¡ ì¶œë ¥
 
-		std::cout << ChoiceSize << " ¾ÆÀÌÅÛ »ç¿ëÇÏ±â" << std::endl;
+		std::cout << ChoiceSize << " ì•„ì´í…œ ì‚¬ìš©í•˜ê¸°" << std::endl;
 
 		int choice = 0;
 
-		std::cout << "¹øÈ£¸¦ ÀÔ·ÂÇØ ¼±ÅÃÇÏ¼¼¿ä:" << std::endl;
+		std::cout << "ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ ì„ íƒí•˜ì„¸ìš”:" << std::endl;
 
 		std::cin >> choice;
 
+		system("cls");
+
+
 		if (choice > 0 && choice < ChoiceSize)
+			
 
 		{
 			return Cclass->getSkillbyIndex(choice);
-			
+
 		}
-		else if(choice == ChoiceSize)
+		else if (choice == ChoiceSize)
 
 		{
 			player->showInventory();
 			if ((player->getInventory()).empty() != true)
 
 			{
-				std::cout << "»ç¿ëÇÒ ¾ÆÀÌÅÛÀ» ¼±ÅÃÇÏ¼¼¿ä" << std::endl;
+				std::cout << "ì‚¬ìš©í•  ì•„ì´í…œì„ ì„ íƒí•˜ì„¸ìš”" << std::endl;
 				std::cin >> choice;
 
 				Item* item = player->GetItemByIndex(choice);
@@ -108,7 +114,7 @@ std::string BattleManager::playerchoice(Character* player)
 				}
 				else
 				{
-					std::cout << "»ç¿ëÇÒ ¼ö ¾ø´Â ¾ÆÀÌÅÛÀÌ°Å³ª Àß¸øµÈ ¼±ÅÃ ÀÔ´Ï´Ù" << std::endl;
+					std::cout << "ì‚¬ìš©í•  ìˆ˜ ì—†ëŠ” ì•„ì´í…œì´ê±°ë‚˜ ì˜ëª»ëœ ì•„ì´í…œ ë²ˆí˜¸ ì…ë‹ˆë‹¤" << std::endl;
 				}
 			}
 			else
@@ -117,30 +123,30 @@ std::string BattleManager::playerchoice(Character* player)
 		}
 
 		else
-		
+
 		{
-			std::cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù ´Ù½Ã ÀÔ·ÂÇØ ÁÖ¼¼¿ä." << std::endl;
+			std::cout << "ï¿½ß¸ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ô´Ï´ï¿½ ï¿½Ù½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½." << std::endl;
 		}
 
-		
+
 	}
 }
 
-void BattleManager::UseItem(Character* player)
-{
-}
+
+	
+
 
 void BattleManager::attackMonster(Character* player, std::string skill, Monster* monster)
 {
 	bool crit = isCrit(player);
 
-	if (skill == "Á¶ÁØ" || skill == "¹æÆĞ" || skill == "¹öÆ¼±â" || skill == "¼û±â") {
+	if (skill == "ì¡°ì¤€" || skill == "ë°©íŒ¨" || skill == "ë²„í‹°ê¸°" || skill == "ìˆ¨ê¸°") {
 
 	}
 	else if (isHit(player) != true && crit != true) {
-		std::cout << "°ø°İÀÌ ºø³ª°¬½À´Ï´Ù." << std::endl;
+		std::cout << "ê³µê²©ì´ ë¹—ë‚˜ê°”ìŠµë‹ˆë‹¤." << std::endl;
 
-		std::cout << "³²Àº ½ºÅ³ È½¼ö: " << player->getRemainingSkillUsage(skill) << std::endl;
+		std::cout << "ë‚¨ì€ ìŠ¤í‚¬ íšŸìˆ˜: " << player->getRemainingSkillUsage(skill) << std::endl;
 		
 		return;
 	}
@@ -148,16 +154,16 @@ void BattleManager::attackMonster(Character* player, std::string skill, Monster*
 	if (player->getWraithArrowDamage() > 0)
 
 	{
-		std::cout << "¸Á·É È­»ìÀÌ Æø¹ßÇß½À´Ï´Ù! Àû¿¡°Ô ÇÇÇØ " << player->getWraithArrowDamage() << std::endl;
+		std::cout << "ë§ë ¹ í™”ì‚´ì´ í­ë°œí–ˆìŠµë‹ˆë‹¤! ì ì—ê²Œ í”¼í•´ " << player->getWraithArrowDamage() << std::endl;
 		monster->takeDamage(player->getWraithArrowDamage());
 		player->setWraithArrowDamage(0);
 	}
 
-	player->useSkill(skill, *player, *monster, crit); // ¼±ÅÃÇÑ ½ºÅ³ »ç¿ë
+	player->useSkill(skill, *player, *monster, crit); // ì„ íƒí•œ ìŠ¤í‚¬ ì‚¬ìš©
 
-	std::cout << "¸ó½ºÅÍÀÇ ³²Àº Ã¼·Â" << monster->getHealth() << std::endl;
+	std::cout << "ëª¬ìŠ¤í„°ì˜ ë‚¨ì€ ì²´ë ¥" << monster->getHealth() << std::endl;
 
-	std::cout << "³²Àº ½ºÅ³ È½¼ö: " << player->getRemainingSkillUsage(skill) << std::endl;
+	std::cout << "ë‚¨ì€ ìŠ¤í‚¬ íšŸìˆ˜: " << player->getRemainingSkillUsage(skill) << std::endl;
 }
 
 bool BattleManager::isCrit(Character* player)
@@ -195,7 +201,7 @@ void BattleManager::attackPlayer(Character* player, Monster* monster)
 	if (player->getIsHiding())
 
 	{
-		std::cout << "°ø°İÀ» È¸ÇÇÇß½À´Ï´Ù" << std::endl;
+		std::cout << "ê³µê²©ì„ íšŒí”¼í–ˆìŠµë‹ˆë‹¤" << std::endl;
 		player->setIsHiding(false);
 		return;
 	}
@@ -207,5 +213,5 @@ void BattleManager::attackPlayer(Character* player, Monster* monster)
 
 	
 
-	player->takeDamage(damage); // ¸ó½ºÅÍÀÇ °ø°İÀ¸·Î ÇÃ·¹ÀÌ¾î ÇÇÇØ
+	player->takeDamage(damage); // ëª¬ìŠ¤í„°ì˜ ê³µê²©ìœ¼ë¡œ í”Œë ˆì´ì–´ í”¼í•´
 }

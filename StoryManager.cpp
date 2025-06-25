@@ -70,6 +70,8 @@ void StoryManager::askUsername() {
 		}
 	}
 	username = input;
+	system("cls");
+
 }
 void StoryManager::makeJobMap() {
 	if (totalScore <= 8) {
