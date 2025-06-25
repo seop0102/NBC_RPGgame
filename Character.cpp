@@ -63,6 +63,10 @@ void Character::displayStat()
 	std::cout << "레벨: " << level << std::endl;
 	std::cout << "체력: " << health << "/" << maxHealth << std::endl;
 	std::cout << "공격력: " << attack << std::endl;
+	std::cout << "방어력: " << defense << std::endl;
+	std::cout << "치명타확률: " << criticalChance << std::endl;
+	std::cout << "명중률: " << hitChance << std::endl;
+	std::cout << "회피율: " << dodgeChance << std::endl;
 	std::cout << "경험치: " << exp << std::endl;
 	std::cout << "골드: " << gold << std::endl;
 	std::cout << "----------------------" << std::endl;

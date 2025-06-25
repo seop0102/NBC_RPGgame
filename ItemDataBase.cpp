@@ -1,10 +1,8 @@
 #include "ItemDataBase.h"
 #include <iostream>
 #include <algorithm>
+#include <random>
 
-#include "Weapon.h"
-#include "Armor.h"
-#include "Consumable.h"
 
 ItemDataBase::ItemDataBase()
 {
@@ -57,43 +55,6 @@ ItemTier ItemDataBase::stringToItemTier(const std::string& tierStr) const
     return ItemTier::NORMAL; // NORAML -> NORMAL 오타 수정
 }
 
-Item* ItemDataBase::createItem(const std::string& itemName) const
-{
-    auto it = nameToIndex.find(itemName);
-    if (it == nameToIndex.end())
-    {
-        std::cout << "아이템을 찾을 수 없습니다: " << itemName << std::endl;
-        return nullptr;
-    }
-    return createItem(it->second);
-}
-
-Item* ItemDataBase::createItem(int index) const
-{
-    if (index < 0 || index >= static_cast<int>(itemDataList.size()))
-    {
-        std::cout << "잘못된 아이템 인덱스 : " << index << std::endl;
-        return nullptr;
-    }
-
-    const ItemData& data = itemDataList[index];
-    ItemType type = stringToItemType(data.typeStr);
-    ItemTier tier = stringToItemTier(data.tierStr);
-
-    // new를 사용하여 동적 할당
-    switch (type)
-    {
-    case ItemType::WEAPON:
-        return new Weapon(data.name, tier, data.attackBonus, data.price);
-    case ItemType::ARMOR:
-        return new Armor(data.name, tier, data.defenseBonus, data.maxHealthBonus, data.price);
-    case ItemType::CONSUMABLE:
-        return new Consumable(data.name, tier, data.healthRecover, data.skillCharges, data.attackBonus, data.price);
-    default:
-        return nullptr;
-    }
-}
-
 const ItemData* ItemDataBase::getItemData(const std::string& itemName) const
 {
     auto it = nameToIndex.find(itemName);
@@ -106,7 +67,7 @@ const ItemData* ItemDataBase::getItemData(const std::string& itemName) const
 
 const ItemData* ItemDataBase::getItemData(int index) const
 {
-    if (index >= 0 && index < static_cast<int>(itemDataList.size()))
+    if (index >= 0 && static_cast<size_t>(index) < itemDataList.size())
     {
         return &itemDataList[index];
     }
@@ -118,96 +79,147 @@ int ItemDataBase::getItemCount() const
     return static_cast<int>(itemDataList.size());
 }
 
-std::vector<Item*> ItemDataBase::getItemsByType(ItemType type) const
+// 아이템 생성 함수 (이름)
+Item* ItemDataBase::createItem(const std::string& itemName) const
 {
-    std::vector<Item*> result;
+    const ItemData* data = getItemData(itemName);
 
+    if (!data)
+    {
+        std::cerr << "Error: Item data not found for name: " << itemName << std::endl;
+        return nullptr;
+    }
+
+    ItemType type = stringToItemType(data->typeStr);
+    ItemTier tier = stringToItemTier(data->tierStr);
+
+    switch (type)
+    {
+    case ItemType::WEAPON:
+        // Weapon 생성자
+        return new Weapon(data->name, tier, data->attackBonus, data->price);
+    case ItemType::ARMOR:
+        // Armor 생성자
+        return new Armor(data->name, tier, data->defenseBonus, data->maxHealthBonus, data->price);
+    case ItemType::CONSUMABLE:
+        // Consumable 생성자
+        return new Consumable(data->name, tier, data->healthRecover, data->skillCharges, data->attackBonus, data->price);
+    default:
+        std::cerr << "Error: Unknown item type for: " << itemName << std::endl;
+        return nullptr;
+    }
+}
+
+// 아이템 생성 함수 (인덱스로)
+Item* ItemDataBase::createItem(int index) const
+{
+    const ItemData* data = getItemData(index);
+    if (!data)
+    {
+        std::cerr << "Error: Item data not found for index: " << index << std::endl;
+        return nullptr;
+    }
+
+    ItemType type = stringToItemType(data->typeStr);
+    ItemTier tier = stringToItemTier(data->tierStr);
+
+    switch (type)
+    {
+    case ItemType::WEAPON:
+        // Weapon 생성자: (name, tier, attackBonus, price)
+        return new Weapon(data->name, tier, data->attackBonus, data->price);
+    case ItemType::ARMOR:
+        // Armor 생성자: (name, tier, defenseBonus, maxHealthBonus, price)
+        return new Armor(data->name, tier, data->defenseBonus, data->maxHealthBonus, data->price);
+    case ItemType::CONSUMABLE:
+        // Consumable 생성자: (name, tier, healthRecover, skillCharges, attackBonus, price)
+        return new Consumable(data->name, tier, data->healthRecover, data->skillCharges, data->attackBonus, data->price);
+    default:
+        std::cerr << "Error: Unknown item type for index: " << index << std::endl;
+        return nullptr;
+    }
+}
+
+std::vector<const ItemData*> ItemDataBase::getItemDatasByType(ItemType type) const
+{
+    std::vector<const ItemData*> result;
     for (size_t i = 0; i < itemDataList.size(); ++i)
     {
         if (stringToItemType(itemDataList[i].typeStr) == type)
         {
-            Item* item = createItem(static_cast<int>(i)); // 새로 생성
-            if (item)
-            {
-                result.push_back(item);
-            }
+            result.push_back(&itemDataList[i]); // 데이터 주소 반환
         }
     }
     return result;
 }
 
-std::vector<Item*> ItemDataBase::getItemsByTier(ItemTier tier) const
+std::vector<const ItemData*> ItemDataBase::getItemDatasByTier(ItemTier tier) const
 {
-    std::vector<Item*> result;
-
+    std::vector<const ItemData*> result;
     for (size_t i = 0; i < itemDataList.size(); ++i)
     {
         if (stringToItemTier(itemDataList[i].tierStr) == tier)
         {
-            Item* item = createItem(static_cast<int>(i)); // 새로 생성
-            if (item)
-            {
-                result.push_back(item);
-            }
+            result.push_back(&itemDataList[i]); // 데이터 주소 반환
         }
     }
     return result;
 }
-
-void ItemDataBase::printAllItems() const
+void ItemDataBase::printAllItemsData() const // 함수 이름 변경: printAllItems -> printAllItemsData
 {
-    std::cout << "== 전체 아이템 목록 ==" << std::endl;
-    std::vector<Item*> allItems; // 임시로 생성된 아이템을 저장할 벡터
+    std::cout << "== 전체 아이템 데이터 목록 ==" << std::endl;
     for (size_t i = 0; i < itemDataList.size(); ++i)
     {
-        Item* item = createItem(static_cast<int>(i)); // 새로 생성
-        if (item)
-        {
-            std::cout << "[" << i << "] " << item->getItemInfo() << std::endl;
-            allItems.push_back(item); // 임시 벡터에 추가하여 나중에 해제
-        }
+        const ItemData& data = itemDataList[i];
+        std::cout << "[" << i << "] 이름: " << data.name
+            << ", 종류: " << data.typeStr
+            << ", 등급: " << data.tierStr
+            << ", 공격력: " << data.attackBonus
+            << ", 방어력: " << data.defenseBonus
+            << ", 체력회복: " << data.healthRecover
+            << ", 스킬충전: " << data.skillCharges
+            << ", 최대체력: " << data.maxHealthBonus
+            << ", 가격: " << data.price << std::endl;
     }
-    // 함수 종료 전 임시로 생성된 아이템 메모리 해제
-    for (Item* item : allItems) {
-        delete item;
-    }
+    std::cout << "----------------------------" << std::endl;
 }
 
-std::vector<Item*> ItemDataBase::getShopItems(int maxPrice) const
+// 상점용 아이템 '데이터' 목록을 가져옵니다.
+std::vector<const ItemData*> ItemDataBase::getShopItemDatas(int maxPrice) const
 {
-    std::vector<Item*> result;
-
+    std::vector<const ItemData*> result;
     for (size_t i = 0; i < itemDataList.size(); ++i)
     {
         if (itemDataList[i].price <= maxPrice)
         {
-            Item* item = createItem(static_cast<int>(i)); // 새로 생성
-            if (item)
-            {
-                result.push_back(item);
-            }
+            result.push_back(&itemDataList[i]); // 데이터 주소 반환
         }
     }
+    // 가격 기준으로 정렬
     std::sort(result.begin(), result.end(),
-        [](const Item* a, const Item* b)
+        [](const ItemData* a, const ItemData* b)
         {
-            return a->getPrice() < b->getPrice();
+            return a->price < b->price;
         });
-
     return result;
 }
 
-Item* ItemDataBase::getRandomItem() const
+// 랜덤 아이템 '데이터'를 가져옵니다.
+const ItemData* ItemDataBase::getRandomItemData() const
 {
-    int chance = rand() % 100;
 
-    if (chance < 30)
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dropChanceDist(0, 99); // 0-99 범위
+
+    if (dropChanceDist(gen) < 30) // 30% 확률로 아이템 드랍
     {
-        int itemIndex = std::rand() % itemDataList.size();
-        return createItem(itemIndex);
+        std::uniform_int_distribution<> itemIndexDist(0, itemDataList.size() - 1);
+        int itemIndex = itemIndexDist(gen);
+        return &itemDataList[itemIndex]; // 데이터 주소 반환
     }
     else
     {
-        return nullptr; // 30% 확률로 아이템을 드랍하지 않음
+        return nullptr; // 70% 확률로 아이템을 드랍하지 않음
     }
 }

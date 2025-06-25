@@ -34,11 +34,11 @@ void GameManager::startGame()
 }
 bool GameManager::playGame()
 {
-	cout << "┌--------------------------------------------------┐" << endl;
-	cout << "│던전탐색[1], 인벤토리[2], 상점방문[3], 게임종료[4]│" << endl;
-	cout << "└--------------------------------------------------┘" << endl;
+	std::cout << "┌--------------------------------------------------┐" << endl;
+	std::cout << "│던전탐색[1], 인벤토리[2], 상점방문[3], 게임종료[4]│" << endl;
+	std::cout << "└--------------------------------------------------┘" << endl;
 	int choice = 0;
-	cout << "선택 입력 대기중 : ";
+	std::cout << "선택 입력 대기중 : ";
 	while (true)
 	{
 		std::cin >> choice;
@@ -55,14 +55,16 @@ bool GameManager::playGame()
 	}
 	if (choice == 1)
 	{
+		std::cout << "던전 입장중..." << endl;
+		std::cout << "전투 시작!" << endl;
 		if (battleManager->doBattle(player))
 		{
-			cout << "전투를 클리어 했습니다!" << endl;
+			std::cout << "전투를 클리어 했습니다!" << endl;
 			player->displayStat();
 		}
 		else
 		{
-			cout << "전투에서 패배했습니다." << endl;	
+			std::cout << "전투에서 패배했습니다." << endl;
 		}
 		return true;
 	}
@@ -84,5 +86,5 @@ bool GameManager::playGame()
 }
 void GameManager::endGame()
 {
-	cout << "게임 종료!" << endl;
+	std::cout << "게임 종료!" << endl;
 }
