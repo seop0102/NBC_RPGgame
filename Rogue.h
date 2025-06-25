@@ -30,4 +30,5 @@ public:
 private:
 	// Rogue가 활성 스킬 이름을 저장할 벡터
 	std::vector<std::string> activeSkills;
+	std::vector<std::string> SkillDescription;
 };

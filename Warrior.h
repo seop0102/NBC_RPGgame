@@ -22,4 +22,5 @@ public:
 private:
 	// SkillType 대신 std::string을 저장하도록 변경
 	std::vector<std::string> activeSkills; // 스킬 이름 목록 (std::string)
+	std::vector<std::string> SkillDescription;
 };

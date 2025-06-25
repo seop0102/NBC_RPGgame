@@ -9,10 +9,19 @@
 Warrior::Warrior() {
     // activeSkills 벡터에 직접 스킬 이름을 문자열로 추가
     activeSkills.push_back("기본 공격");
+    SkillDescription.push_back(" (공격력의 100% 대미지를 줍니다)");
+
     activeSkills.push_back("베기");
+    SkillDescription.push_back(" (공격력의 120% 대미지를 줍니다)");
+
     activeSkills.push_back("방패");
+    SkillDescription.push_back(" (방패를 올려 바어력을 올립니다)");
+
     activeSkills.push_back("강타");
+    SkillDescription.push_back(" (치명타 피해가 높은 공격을 합니다)");
+
     activeSkills.push_back("버티기");
+    SkillDescription.push_back(" (다음 공격에 피해를 받아도 쓰러지지 않습니다)");
 }
 
 std::string Warrior::getClassName() const {
@@ -27,8 +36,8 @@ std::vector<std::string> Warrior::getActiveSkills() const {
 void Warrior::showSkills() const
 {
         int count = 1;
-        for (const auto& skill : activeSkills) {
-                std::cout << count << ' ' << skill << std::endl; // 스킬 이름 출력
+        for (int i = 0; i < activeSkills.size(); i++) {
+                std::cout << count << ' ' << activeSkills[i] << ' ' << SkillDescription[i] << std::endl; // 스킬 이름 출력
                 count++;
         }
 
@@ -79,7 +88,6 @@ void Warrior::useSkill(const std::string& skillName, Character& self, Monster& t
     }
     else if (skillName == "버티기") {
         // Character.cpp의 useSkill에서 횟수 차감이 이미 처리됨
-        std::cout << self.getName() << "이(가) 인내심으로 버티기를 사용합니다! 다음 턴에 죽지 않습니다." << std::endl;
         self.setHasIndomitableWill(true); // Character에 hasIndomitableWill 상태 추가 및 세터 필요
     }
     else {

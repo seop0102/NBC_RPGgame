@@ -7,20 +7,20 @@
 
 
 Archer::Archer() {
-    activeSkills.push_back("기본 공격"); // 모든 직업은 기본 공격을 가집니다.
-    SkillDescription.push_back("공격력의 100% 대미지");
+    activeSkills.push_back("기본 공격");
+    SkillDescription.push_back(" (공격력의 100% 대미지를 줍니다)");
 
     activeSkills.push_back("화살 명중");
-    SkillDescription.push_back("조준 상태면 화살이 반드시 명중하며 추가 피해를 입힙니다!");
+    SkillDescription.push_back(" (조준 상태면 화살이 반드시 명중하며 추가 피해를 입힙니다)");
 
     activeSkills.push_back("조준");
-    SkillDescription.push_back("조준 합니다");
+    SkillDescription.push_back(" (조준 합니다)");
 
     activeSkills.push_back("폭풍 화살");
-    SkillDescription.push_back("공격력의 60% 피해로 여러번 공격합니다");
+    SkillDescription.push_back(" (공격력의 60% 피해로 여러번 공격합니다)");
 
     activeSkills.push_back("망령 화살");
-    SkillDescription.push_back("조준 합니다");
+    SkillDescription.push_back(" (다음턴에 큰 피해를 주는 화살을 발사합니다)");
 }
 
 namespace {
@@ -43,8 +43,8 @@ void Archer::applyPassiveSkill(Character& self) {
 void Archer::showSkills() const
 {
         int count = 1;
-        for (const auto& skill : activeSkills) {
-                std::cout << count << ' ' << skill << std::endl; // 스킬 이름 출력
+        for (int i = 0; i < activeSkills.size(); i++) {
+                std::cout << count << ' ' << activeSkills[i] <<  ' ' << SkillDescription[i] << std::endl; // 스킬 이름 출력
                 count++;
         }
         

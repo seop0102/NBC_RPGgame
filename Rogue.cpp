@@ -8,10 +8,19 @@
 // Rogue 생성자에서 스킬 목록 초기화
 Rogue::Rogue() {
     activeSkills.push_back("기본 공격");
+    SkillDescription.push_back(" (공격력의 100% 대미지를 줍니다)");
+
     activeSkills.push_back("찢기");
+    SkillDescription.push_back(" (추가 공격력을 더해 피해를 줍니다)");
+
     activeSkills.push_back("날렵한 손");
+    SkillDescription.push_back(" (적에게 적은 피해를 주고 골드를 훔칩니다)");
+
     activeSkills.push_back("급습");
+    SkillDescription.push_back(" (높은 치명타 확률로 적을 공격합니다)");
+
     activeSkills.push_back("숨기");
+    SkillDescription.push_back(" (재빨리 숨어 다음 공격을 회피 합니다)");
 }
 
 namespace {
@@ -36,8 +45,8 @@ void Rogue::applyPassiveSkill(Character& self) {
 void Rogue::showSkills() const
 {
         int count = 1;
-        for (const auto& skill : activeSkills) {
-                std::cout << count << ' ' << skill << std::endl; // 스킬 이름 출력
+        for (int i = 0; i < activeSkills.size(); i++) {
+                std::cout << count << ' ' << activeSkills[i] << ' ' << SkillDescription[i] << std::endl; // 스킬 이름 출력
                 count++;
         }
 
