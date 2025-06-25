@@ -18,6 +18,8 @@ bool BattleManager::doBattle(Character* player)
 	{
 
 
+		std::cout << "몬스터 등장!! 이름:  " << monster->getName() << " 공격력: " << monster->getAttack() << " 체력: " << monster->getHealth() << std::endl;
+
 		//전투 구현
 		// 플레이어가 스킬을 선택하는 함수 호출
 		attackMonster(player, playerchoice(player), monster);
