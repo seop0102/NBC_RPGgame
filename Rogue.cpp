@@ -16,7 +16,7 @@ Rogue::Rogue() {
 
 namespace {
     // 내부 헬퍼 함수들도 SkillType 대신 std::string 사용하도록 수정
-    void performRogue1(Character& self, Monster& target); // 찢기
+    void performRogue1(Character& self, Monster& target, bool isCrit); // 찢기
     void performRogue2(Character& self, Monster& target); // 날렵한 손
     void performRogue3(Character& self, Monster& target); // 급습
     void performRogue4(Character& self, Monster& target); // 숨기
@@ -44,10 +44,10 @@ void Rogue::showSkills() const
 }
 
 // SkillType 대신 const std::string&을 매개변수로 받도록 변경
-void Rogue::useSkill(const std::string& skillName, Character& self, Monster& target) {
+void Rogue::useSkill(const std::string& skillName, Character& self, Monster& target, bool isCrit) {
     // switch 문 대신 if-else if 문으로 문자열 비교
     if (skillName == "찢기") {
-        performRogue1(self, target);
+        performRogue1(self, target, isCrit);
     }
     else if (skillName == "날렵한 손") {
         performRogue2(self, target);
@@ -61,6 +61,13 @@ void Rogue::useSkill(const std::string& skillName, Character& self, Monster& tar
     else if (skillName == "기본 공격") { // 기본 공격도 여기서 처리
         std::cout << self.getName() << "이(가) " << target.getName() << "에게 기본 공격을 시전합니다!" << std::endl;
         int damage = self.getAttack();
+
+        if (isCrit)
+        {
+                std::cout << "치명타!!" << std::endl;
+                damage = static_cast<int>(damage * 1.5);
+        }
+
         target.takeDamage(damage);
     }
     else {
@@ -69,10 +76,18 @@ void Rogue::useSkill(const std::string& skillName, Character& self, Monster& tar
 }
 
 namespace {
-    void performRogue1(Character& self, Monster& target) {
+    void performRogue1(Character& self, Monster& target, bool isCrit) {
         std::cout << self.getName() << "의 찢기!" << std::endl;
         int damage = self.getAttack() + 15;
+
+        if (isCrit)
+        {       
+                std::cout << "치명타!!" << std::endl;
+                damage = static_cast<int>(damage *1.5);
+        }
+
         std::cout << "날카로운 단검이 " << target.getName() << "에게 상처를 입혀 " << damage << "의 피해!" << std::endl;
+
         target.takeDamage(damage);
     }
 

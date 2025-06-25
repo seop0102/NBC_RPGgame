@@ -68,7 +68,7 @@ public:
 	int getDodgeChance() const { return dodgeChance; } // 회피율 반환
 
 	std::vector<std::string> getActiveSkills() const;
-	void useSkill(const std::string& skillName, Character& self, Monster& target);
+	void useSkill(const std::string& skillName, Character& self, Monster& target, bool isCrit);
 	void applyPassiveSkill(Character& self);
 	std::string getClassName() const;
 

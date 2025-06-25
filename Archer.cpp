@@ -16,9 +16,9 @@ Archer::Archer() {
 
 namespace {
     // 내부 헬퍼 함수들도 SkillType 대신 std::string 사용하도록 수정
-    void performArcher1(Character& self, Monster& target); // 화살 명중
+    void performArcher1(Character& self, Monster& target, bool isCrit); // 화살 명중
     void performArcher2(Character& self, Monster& target); // 조준
-    void performArcher3(Character& self, Monster& target); // 폭풍 화살
+    void performArcher3(Character& self, Monster& target, bool isCrit); // 폭풍 화살
     void performArcher4(Character& self, Monster& target); // 망령 화살
 }
 
@@ -42,16 +42,16 @@ void Archer::showSkills() const
 }
 
 // SkillType 대신 const std::string&을 매개변수로 받도록 변경
-void Archer::useSkill(const std::string& skillName, Character& self, Monster& target) {
+void Archer::useSkill(const std::string& skillName, Character& self, Monster& target, bool isCrit) {
     // switch 문 대신 if-else if 문으로 문자열 비교
     if (skillName == "화살 명중") {
-        performArcher1(self, target);
+        performArcher1(self, target, isCrit);
     }
     else if (skillName == "조준") {
         performArcher2(self, target);
     }
     else if (skillName == "폭풍 화살") {
-        performArcher3(self, target);
+        performArcher3(self, target, isCrit);
     }
     else if (skillName == "망령 화살") {
         performArcher4(self, target);
@@ -59,6 +59,13 @@ void Archer::useSkill(const std::string& skillName, Character& self, Monster& ta
     else if (skillName == "기본 공격") { // 기본 공격도 여기서 처리할 수 있습니다.
         std::cout << self.getName() << "이(가) " << target.getName() << "에게 기본 공격을 시전합니다!" << std::endl;
         int damage = self.getAttack();
+
+        if (isCrit)
+        {
+                std::cout << "치명타!!" << std::endl;
+                damage = static_cast<int>(damage * 1.5);
+        }
+
         target.takeDamage(damage);
     }
     else {
@@ -67,7 +74,7 @@ void Archer::useSkill(const std::string& skillName, Character& self, Monster& ta
 }
 
 namespace {
-    void performArcher1(Character& self, Monster& target) {
+    void performArcher1(Character& self, Monster& target, bool isCrit) {
         std::cout << self.getName() << "의 화살 명중!" << std::endl;
         int damage = self.getAttack();
 
@@ -76,6 +83,12 @@ namespace {
             std::cout << "조준 효과로 화살이 반드시 명중하며 추가 피해를 입힙니다!" << std::endl;
             damage = static_cast<int>(damage * 1.3); // 데미지 30% 증가
             self.setIsAimed(false); // 조준 효과 사용 후 초기화
+        }
+
+        if (isCrit)
+        {
+                std::cout << "치명타!!" << std::endl;
+                damage = static_cast<int>(damage * 1.5);
         }
 
         std::cout << target.getName() << "에게 " << damage << "의 피해를 입혔습니다." << std::endl;
@@ -88,10 +101,17 @@ namespace {
         std::cout << "다음 공격의 명중률과 피해량이 증가합니다." << std::endl;
     }
 
-    void performArcher3(Character& self, Monster& target) {
+    void performArcher3(Character& self, Monster& target, bool isCrit) {
         std::cout << self.getName() << "의 폭풍 화살!" << std::endl;
         int hitCount = Utils::getRandomInt(2, 4); // 2~4발 랜덤 발사
         int damagePerHit = static_cast<int>(self.getAttack() * 0.6); // 한 발당 피해량은 60%
+
+        if (isCrit)
+        {
+                std::cout << "치명타!!" << std::endl;
+                damagePerHit = static_cast<int>(damagePerHit * 1.5);
+        }
+
         std::cout << "수많은 화살이 " << target.getName() << "을(를) " << hitCount << "번 가격합니다!" << std::endl;
         for (int i = 0; i < hitCount; ++i) {
             target.takeDamage(damagePerHit);

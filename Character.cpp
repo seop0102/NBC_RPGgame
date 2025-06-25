@@ -20,7 +20,7 @@ Character::Character(std::string name, IClass* selectedClass)
 	attack(30),
 	defense(0), // 기본 방어력 설정 (필요시)
 	criticalChance(5), // 기본 치명타 확률 (필요시)
-	hitChance(85), // 기본 명중률 설정 (필요시)
+	hitChance(5), // 기본 명중률 설정 (필요시)
 	dodgeChance(5), // 기본 회피율 설정 (필요시)
 	exp(0),
 	gold(0),
@@ -342,12 +342,12 @@ std::vector<std::string> Character::getActiveSkills() const {
 	return {};
 }
 
-void Character::useSkill(const std::string& skillName, Character& self, Monster& target) { // <-- std::string 받음 확인
+void Character::useSkill(const std::string& skillName, Character& self, Monster& target, bool isCrit) { // <-- std::string 받음 확인
 	if (characterClass) {
 		// 스킬 사용 횟수 확인 (예: 1회성 스킬)
 		// 맵의 키는 std::string이므로, skillName으로 직접 접근
 		if (skillUsages.count(skillName) && skillUsages[skillName] > 0) { // <-- std::string 키 접근 확인
-			characterClass->useSkill(skillName, self, target); // 실제 스킬 효과 실행
+			characterClass->useSkill(skillName, self, target, isCrit); // 실제 스킬 효과 실행
 
 			// 1회성 스킬은 사용 후 횟수 감소 (스킬 이름을 string으로 비교)
 			if (skillName == "숨기" || skillName == "버티기" || skillName == "망령 화살") {
@@ -359,7 +359,7 @@ void Character::useSkill(const std::string& skillName, Character& self, Monster&
 			std::cout << "스킬 '" << skillName << "'의 사용 횟수를 모두 소진했습니다." << std::endl;
 		}
 		else { // 무제한 스킬 (기본 공격 등)
-			characterClass->useSkill(skillName, self, target);
+			characterClass->useSkill(skillName, self, target, isCrit);
 		}
 	}
 }

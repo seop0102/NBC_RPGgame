@@ -35,15 +35,29 @@ void Warrior::showSkills() const
 }
 
 // 매개변수를 const std::string&으로 변경하고 내부 로직도 문자열 비교로 변경
-void Warrior::useSkill(const std::string& skillName, Character& self, Monster& target) {
+void Warrior::useSkill(const std::string& skillName, Character& self, Monster& target, bool isCrit) {
     if (skillName == "기본 공격") {
         std::cout << self.getName() << "이(가) " << target.getName() << "에게 기본 공격을 시전합니다!" << std::endl;
         int damage = self.getAttack();
+
+        if (isCrit)
+        {
+                std::cout << "치명타!!" << std::endl;
+                damage = static_cast<int>(damage * 1.5);
+        }
+
         target.takeDamage(damage);
     }
     else if (skillName == "베기") {
         std::cout << self.getName() << "이(가) " << target.getName() << "에게 베기를 시전합니다!" << std::endl;
         int damage = self.getAttack() * 1.2; // 예시로 공격력의 120%
+
+        if (isCrit)
+        {
+                std::cout << "치명타!!" << std::endl;
+                damage = static_cast<int>(damage * 1.5);
+        }
+
         target.takeDamage(damage);
     }
     else if (skillName == "방패") {
@@ -54,10 +68,13 @@ void Warrior::useSkill(const std::string& skillName, Character& self, Monster& t
     else if (skillName == "강타") {
         std::cout << self.getName() << "이(가) " << target.getName() << "에게 강타를 시전합니다!" << std::endl;
         int damage = self.getAttack() * 1.5; // 강한 공격
-        if (Utils::checkChance(self.getCriticalChance())) { // Utils::checkChance는 예시 함수
-            damage *= 2; // 치명타
-            std::cout << "치명타 발동!" << std::endl;
+
+        if (isCrit)
+        {
+                std::cout << "치명타!!" << std::endl;
+                damage = static_cast<int>(damage * 2);
         }
+
         target.takeDamage(damage);
     }
     else if (skillName == "버티기") {

@@ -19,7 +19,8 @@ bool BattleManager::doBattle(Character* player)
 
 
 		//전투 구현
-		playerchoice(player); // 플레이어가 스킬을 선택하는 함수 호출
+		// 플레이어가 스킬을 선택하는 함수 호출
+		attackMonster(player, playerchoice(player), monster);
 
 		if (monster->getHealth() <= 0) {
 
@@ -72,17 +73,21 @@ std::string BattleManager::playerchoice(Character* player)
 
 void BattleManager::attackMonster(Character* player, std::string skill, Monster* monster)
 {
-	IClass* Cclass = player->getCharacterClass();
+	bool crit = isCrit(player);
 
-	if(isCrit(player)) {
+	if (skill == "조준" || skill == "방패" || skill == "버티기" || skill == "숨기") {
 
 	}
-	else if (isHit(player)) {
+	else if (isHit(player) != true && crit != true) {
 		std::cout << "공격이 빗나갔습니다." << std::endl;
+
+		std::cout << "남은 스킬 횟수: " << player->getRemainingSkillUsage(skill) << std::endl;
+		
 		return;
 	}
 
-	Cclass->useSkill(skill, *player, *monster); // 선택한 스킬 사용
+
+	player->useSkill(skill, *player, *monster, crit); // 선택한 스킬 사용
 
 	std::cout << "몬스터의 남은 체력" << monster->getHealth() << std::endl;
 
