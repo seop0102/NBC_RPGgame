@@ -55,7 +55,7 @@ bool BattleManager::doBattle(Character* player)
 	}
 }
 
-string BattleManager::playerchoice(Character* player)
+std::string BattleManager::playerchoice(Character* player)
 {
 	IClass* Cclass = player->getCharacterClass();
 
@@ -70,7 +70,7 @@ string BattleManager::playerchoice(Character* player)
 	return Cclass->getSkillbyIndex(choice);
 }
 
-void BattleManager::attackMonster(Character* player, string skill, Monster* monster)
+void BattleManager::attackMonster(Character* player, std::string skill, Monster* monster)
 {
 	IClass* Cclass = player->getCharacterClass();
 
@@ -78,15 +78,15 @@ void BattleManager::attackMonster(Character* player, string skill, Monster* mons
 
 	}
 	else if (isHit(player)) {
-		cout << "공격이 빗나갔습니다." << endl;
+		std::cout << "공격이 빗나갔습니다." << std::endl;
 		return;
 	}
 
 	Cclass->useSkill(skill, *player, *monster); // 선택한 스킬 사용
 
-	cout << "몬스터의 남은 체력" << monster->getHealth() << endl;
+	std::cout << "몬스터의 남은 체력" << monster->getHealth() << std::endl;
 
-	cout << "남은 스킬 횟수: " << player->getRemainingSkillUsage(skill) << endl;
+	std::cout << "남은 스킬 횟수: " << player->getRemainingSkillUsage(skill) << std::endl;
 }
 
 bool BattleManager::isCrit(Character* player)

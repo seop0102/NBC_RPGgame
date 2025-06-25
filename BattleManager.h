@@ -25,9 +25,9 @@ public:
 
 	bool doBattle(Character* player); //전투를 클리어 하면 true 아니면 false 반환
 
-	string playerchoice(Character* player); //플레이어가 스킬을 선택하는 함수
+	std::string playerchoice(Character* player); //플레이어가 스킬을 선택하는 함수
 
-	void attackMonster(Character* player, string skill, Monster* monster);
+	void attackMonster(Character* player, std::string skill, Monster* monster);
 
 	bool isCrit(Character* player);
 
