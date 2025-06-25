@@ -20,7 +20,7 @@ Character::Character(std::string name, IClass* selectedClass)
 	attack(30),
 	defense(0), // 기본 방어력 설정 (필요시)
 	criticalChance(5), // 기본 치명타 확률 (필요시)
-	hitChance(5), // 기본 명중률 설정 (필요시)
+	hitChance(80), // 기본 명중률 설정 (필요시)
 	dodgeChance(5), // 기본 회피율 설정 (필요시)
 	exp(0),
 	gold(0),
@@ -104,6 +104,12 @@ void Character::takeDamage(int damage)
 	health -= damage;
 	if (health <= 0)
 	{
+		if (getHasIndomitableWill())
+		{
+			std::cout << "몬스터의 공격을 버텨냈습니다!" << std::endl;
+			health = 1;
+			return;
+		}
 		health = 0;
 	}
 }
@@ -383,21 +389,21 @@ void Character::initializeSkillUsages() {
 	skillUsages["기본 공격"] = 99; // 무제한
 
 	// 전사 스킬
-	skillUsages["베기"] = 99;
-	skillUsages["방패"] = 99;
-	skillUsages["강타"] = 99;
+	skillUsages["베기"] = 5;
+	skillUsages["방패"] = 1;
+	skillUsages["강타"] = 3;
 	skillUsages["버티기"] = 1; // 1회 제한
 
 	// 궁수 스킬
-	skillUsages["화살 명중"] = 99;
-	skillUsages["조준"] = 99;
-	skillUsages["폭풍 화살"] = 99;
+	skillUsages["화살 명중"] = 5;
+	skillUsages["조준"] = 5;
+	skillUsages["폭풍 화살"] = 3;
 	skillUsages["망령 화살"] = 1; // 1회 제한
 
 	// 도적 스킬
-	skillUsages["찢기"] = 99;
-	skillUsages["날렵한 손"] = 99;
-	skillUsages["급습"] = 99;
+	skillUsages["찢기"] = 5;
+	skillUsages["날렵한 손"] = 2;
+	skillUsages["급습"] = 3;
 	skillUsages["숨기"] = 1; // 1회 제한
 
 	// (필요하다면 여기에 더 많은 스킬과 사용 횟수를 추가)
@@ -417,6 +423,21 @@ void Character::restoreSkillUsage(const std::string& skillName, int amount) {
 	else {
 		std::cout << "알 수 없는 스킬이거나 사용 횟수를 복원할 수 없는 스킬입니다." << std::endl;
 	}
+}
+
+void Character::initializeSkillEffect()
+{
+	setIsAimed(false);
+	setIsHiding(false);
+	setHasIndomitableWill(false);
+
+	if (getIsShielded())
+
+	{
+		setDefense(getDefense() - 10);
+		setIsShielded(false);
+	}
+	
 }
 
 // 남은 스킬 사용 횟수 반환 함수

@@ -49,7 +49,6 @@ private:
 	bool isHiding; // 도적, 숨기 (1회성)
 
 	bool isShielded; // 워리어, 방패 (턴당 1회)
-	bool hasSurvivedThisTurn; // 워리어, 버티기 (턴당 1회)
 	bool hasIndomitableWill; // 워리어 패시브 
 
 
@@ -99,6 +98,8 @@ public:
 	// 스킬 사용 횟수
 	void initializeSkillUsages();
 	void restoreSkillUsage(const std::string& skillName, int amount);
+	void initializeSkillEffect();
+
 	int getRemainingSkillUsage(const std::string& skillName) const;
 	std::string getSkillName(const std::string& skillName) const; // 스킬 타입-> 이름 변환
 
@@ -110,8 +111,6 @@ public:
 	void setIsHiding(bool val) { isHiding = val; }
 	bool getIsHiding() const { return isHiding; } // 숨기 상태 설정
 
-	void setHasSurvivedThisTurn(bool val) { hasSurvivedThisTurn = val; }
-	bool getHasSurvivedThisTurn() const { return hasSurvivedThisTurn; }
 	void setIsShielded(bool val) { isShielded = val; }
 	bool getIsShielded() const { return isShielded; }
 	void setHasIndomitableWill(bool val) { hasIndomitableWill = val; }

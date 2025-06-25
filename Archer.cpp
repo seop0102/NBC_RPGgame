@@ -8,10 +8,19 @@
 
 Archer::Archer() {
     activeSkills.push_back("기본 공격"); // 모든 직업은 기본 공격을 가집니다.
+    SkillDescription.push_back("공격력의 100% 대미지");
+
     activeSkills.push_back("화살 명중");
+    SkillDescription.push_back("조준 상태면 화살이 반드시 명중하며 추가 피해를 입힙니다!");
+
     activeSkills.push_back("조준");
+    SkillDescription.push_back("조준 합니다");
+
     activeSkills.push_back("폭풍 화살");
+    SkillDescription.push_back("공격력의 60% 피해로 여러번 공격합니다");
+
     activeSkills.push_back("망령 화살");
+    SkillDescription.push_back("조준 합니다");
 }
 
 namespace {
@@ -80,7 +89,6 @@ namespace {
 
         // '조준' 상태라면 추가 피해 및 필중 효과
         if (self.getIsAimed()) {
-            std::cout << "조준 효과로 화살이 반드시 명중하며 추가 피해를 입힙니다!" << std::endl;
             damage = static_cast<int>(damage * 1.3); // 데미지 30% 증가
             self.setIsAimed(false); // 조준 효과 사용 후 초기화
         }
@@ -98,7 +106,7 @@ namespace {
     void performArcher2(Character& self, Monster& target) {
         std::cout << self.getName() << "의 조준!" << std::endl;
         self.setIsAimed(true); // isAimed 플래그 활성화
-        std::cout << "다음 공격의 명중률과 피해량이 증가합니다." << std::endl;
+        
     }
 
     void performArcher3(Character& self, Monster& target, bool isCrit) {
@@ -120,7 +128,7 @@ namespace {
 
     void performArcher4(Character& self, Monster& target) {
         std::cout << self.getName() << "의 망령 화살!" << std::endl;
-        int delayedDamage = self.getAttack() * 2; // 공격력의 200%에 해당하는 지연 피해
+        int delayedDamage = static_cast<int>(self.getAttack() * 2.5); // 공격력의 200%에 해당하는 지연 피해
         // Character.h에 선언된 wraithArrowDamage 변수에 피해량 저장
         self.setWraithArrowDamage(delayedDamage);
         std::cout << "망령의 기운이 담긴 화살이 " << target.getName() << "에게 박혔습니다. 다음 턴에 폭발합니다!" << std::endl;

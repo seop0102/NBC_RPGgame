@@ -29,6 +29,8 @@ public:
 
 	void attackMonster(Character* player, std::string skill, Monster* monster);
 
+	void attackPlayer(Character* player, Monster* monster);
+
 	bool isCrit(Character* player);
 
 	bool isDodge(Character* player);

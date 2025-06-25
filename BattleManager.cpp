@@ -35,6 +35,9 @@ bool BattleManager::doBattle(Character* player)
 
 			player->addExp(EXP); // 몬스터 처치 시 경험치 추가
 
+			player->initializeSkillUsages(); //스킬 사용 횟수 초기화
+			player->initializeSkillEffect(); // 스킬 효과 제거
+
 			delete monster;
 
 			return true; // 전투 클리어
@@ -121,4 +124,25 @@ Monster* BattleManager::CreateMonster(Character* player)
 	default:
 		return nullptr;
 	}
+}
+
+void BattleManager::attackPlayer(Character* player, Monster* monster)
+
+{
+	if (player->getIsHiding())
+
+	{
+		std::cout << "공격을 회피했습니다" << std::endl;
+		player->setIsHiding(false);
+		return;
+	}
+		
+	int defense = player->getDefense();
+	int damage = monster->getAttack();
+
+	damage = damage - (damage * (defense / 100));
+
+	
+
+	player->takeDamage(damage); // 몬스터의 공격으로 플레이어 피해
 }

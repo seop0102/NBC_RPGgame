@@ -28,6 +28,7 @@ void GameManager::startGame()
 	}
 	player = new Character(storyManager->getName(), selectedClass);
 	player->initializeSkillUsages();
+	player->applyPassiveSkill(*player);
 	player->displayStat();
 }
 void GameManager::playGame()
