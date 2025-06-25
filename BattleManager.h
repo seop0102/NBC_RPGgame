@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Character.h"
 #include "Monster.h"
 #include "Orc.h"
@@ -15,7 +17,7 @@ class BattleManager
 {
 private:
 	const int EXP = 50;
-
+	
 public:
 	BattleManager() = default;
 	~BattleManager() = default;
@@ -23,7 +25,15 @@ public:
 
 	bool doBattle(Character* player); //전투를 클리어 하면 true 아니면 false 반환
 
-	void playerchoice(Character* player, Monster* monster); //플레이어가 스킬을 선택하는 함수
+	string playerchoice(Character* player); //플레이어가 스킬을 선택하는 함수
+
+	void attackMonster(Character* player, string skill, Monster* monster);
+
+	bool isCrit(Character* player);
+
+	bool isDodge(Character* player);
+
+	bool isHit(Character* player);
 
 
 	Monster* CreateMonster(Character* player);

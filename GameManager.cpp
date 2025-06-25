@@ -33,17 +33,20 @@ void GameManager::startGame()
 void GameManager::playGame()
 {
 	cout << "게임을 시작합니다!" << endl;
-	if (battleManager->doBattle(player))
-	{
-		cout << "전투를 클리어 했습니다!" << endl;
-		player->displayStat();
-		//상점클래스의 오픈함수로 다시 추가
-	}
-	else
-	{
-		cout << "전투에서 패배했습니다. 게임을 종료합니다." << endl;
-		endGame();
-		return;
+
+	while (true) {
+		
+		if (battleManager->doBattle(player))
+		{
+			cout << "전투를 클리어 했습니다!" << endl;
+			player->displayStat();
+			//상점클래스의 오픈함수로 다시 추가
+		}
+		else
+		{
+			cout << "전투에서 패배했습니다." << endl;
+			break;
+		}
 	}
 }
 void GameManager::endGame()

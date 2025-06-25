@@ -1,6 +1,5 @@
 #include "BattleManager.h"
 
-
 bool BattleManager::doBattle(Character* player)
 {
 	IClass* Cclass = player->getCharacterClass();
@@ -20,7 +19,7 @@ bool BattleManager::doBattle(Character* player)
 
 
 		//전투 구현
-		playerchoice(player, monster); // 플레이어가 스킬을 선택하는 함수 호출
+		playerchoice(player); // 플레이어가 스킬을 선택하는 함수 호출
 
 		if (monster->getHealth() <= 0) {
 
@@ -56,7 +55,7 @@ bool BattleManager::doBattle(Character* player)
 	}
 }
 
-void BattleManager::playerchoice(Character* player, Monster* monster)
+string BattleManager::playerchoice(Character* player)
 {
 	IClass* Cclass = player->getCharacterClass();
 
@@ -68,7 +67,41 @@ void BattleManager::playerchoice(Character* player, Monster* monster)
 
 	cin >> choice;
 
-	Cclass->useSkill((Cclass->getSkillbyIndex(choice)), *player, *monster); // 선택한 스킬 사용
+	return Cclass->getSkillbyIndex(choice);
+}
+
+void BattleManager::attackMonster(Character* player, string skill, Monster* monster)
+{
+	IClass* Cclass = player->getCharacterClass();
+
+	if(isCrit(player)) {
+
+	}
+	else if (isHit(player)) {
+		cout << "공격이 빗나갔습니다." << endl;
+		return;
+	}
+
+	Cclass->useSkill(skill, *player, *monster); // 선택한 스킬 사용
+
+	cout << "몬스터의 남은 체력" << monster->getHealth() << endl;
+
+	cout << "남은 스킬 횟수: " << player->getRemainingSkillUsage(skill) << endl;
+}
+
+bool BattleManager::isCrit(Character* player)
+{
+	return Utils::checkChance(player->getCriticalChance() * Utils::rollDice());
+}
+
+bool BattleManager::isDodge(Character* player)
+{
+	return Utils::checkChance(player->getDodgeChance() * Utils::rollDice());
+}
+
+bool BattleManager::isHit(Character* player)
+{
+	return Utils::checkChance(player->getHitChance());
 }
 
 Monster* BattleManager::CreateMonster(Character* player)

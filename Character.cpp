@@ -20,8 +20,8 @@ Character::Character(std::string name, IClass* selectedClass)
 	health(200),
 	maxHealth(200),
 	attack(30),
-	defense(10), // 기본 방어력 설정 (필요시)
-	criticalChance(10), // 기본 치명타 확률 (필요시)
+	defense(0), // 기본 방어력 설정 (필요시)
+	criticalChance(5), // 기본 치명타 확률 (필요시)
 	hitChance(85), // 기본 명중률 설정 (필요시)
 	dodgeChance(5), // 기본 회피율 설정 (필요시)
 	exp(0),
