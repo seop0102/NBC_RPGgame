@@ -81,10 +81,21 @@ std::string BattleManager::playerchoice(Character* player)
 		std::cout << ChoiceSize << " 아이템 사용하기" << std::endl;
 
 		int choice = 0;
-
 		std::cout << "번호를 입력해 선택하세요:" << std::endl;
-
-		std::cin >> choice;
+		while (true)
+		{
+			std::cin >> choice;
+			if (std::cin.fail() || choice <= 0 || choice > ChoiceSize + 1)
+			{
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cout << "잘못된 입력입니다. 다시 입력해 주세요." << std::endl;
+			}
+			else
+			{
+				break;
+			}
+		}
 
 		system("cls");
 
@@ -125,7 +136,7 @@ std::string BattleManager::playerchoice(Character* player)
 		else
 
 		{
-			std::cout << "�߸��� �Է��Դϴ� �ٽ� �Է��� �ּ���." << std::endl;
+			// 당장은 처리할 것이 없음.
 		}
 
 

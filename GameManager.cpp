@@ -31,6 +31,8 @@ void GameManager::startGame()
 	player->applyPassiveSkill(*player);
 	player->displayStat();
 
+	//테스트용 골드세팅
+	player->setGold(10000);
 }
 bool GameManager::playGame()
 {

@@ -66,14 +66,19 @@ void StoryManager::playPrologue() {
 		}
 		std::cout << "================================================================================" << std::endl;
 		int userChoice = 0;
-		while (true) {
-			std::cout << "\n번호를 입력하세요 : ";
+		std::cout << "\n번호를 입력하세요 : ";
+		while (true)
+		{
 			std::cin >> userChoice;
-			if (userChoice >= 1 && userChoice <= 3) {
-				break;
-			}
-			else {
+			if (std::cin.fail() || userChoice < 1 || userChoice > 3)
+			{
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				std::cout << "1,2,3 중에서 다시 입력해주세요." << std::endl;
+			}
+			else
+			{
+				break;
 			}
 		}
 		totalScore += userChoice;
