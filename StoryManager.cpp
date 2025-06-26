@@ -115,10 +115,12 @@ void StoryManager::playPrologue() {
 	for (int i = 0; i < 5; ++i) {
 		//문제 출력
 		std::cout << "================================================================================" << std::endl;
-		printSlow("...\n", 500);
+		if (i == 0) {
+			printSlow("...\n", 500);
+		}
 		// 프롤로그 문장은 한 번에 출력
 		std::cout << "\n" << prologue[i] << std::endl;
-		std::this_thread::sleep_for(std::chrono::seconds(2)); // 3초 대기
+		std::this_thread::sleep_for(std::chrono::seconds(2)); // 2초 대기
 		for (int j = 0; j < 3; j++) {
 			std::cout << answer[i * 3 + j] << "\n" << std::endl;
 		}
