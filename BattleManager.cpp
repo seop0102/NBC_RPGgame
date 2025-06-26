@@ -125,7 +125,7 @@ std::string BattleManager::playerchoice(Character* player)
 		else
 
 		{
-			std::cout << "�߸��� �Է��Դϴ� �ٽ� �Է��� �ּ���." << std::endl;
+			std::cout << "잘못된 선택입니다" << std::endl;
 		}
 
 
