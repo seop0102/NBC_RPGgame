@@ -1,8 +1,9 @@
 ﻿#include "BattleManager.h"
 
-bool BattleManager::doBattle(Character* player)
+bool BattleManager::doBattle(Character* player, Timeline* timeline)
 {
 	assert(player);
+
 	IClass* Cclass = player->getCharacterClass();
 
 	Monster* monster;
@@ -29,6 +30,8 @@ bool BattleManager::doBattle(Character* player)
 		attackMonster(player, playerchoice(player), monster);
 
 		if (monster->getHealth() <= 0) {
+			
+			timeline->KillMonsterTimeline(std::time(nullptr), player, monster);
 
 			std::cout << "몬스터를 처치했습니다!" << std::endl;
 
@@ -39,6 +42,7 @@ bool BattleManager::doBattle(Character* player)
 			Item* item= monster->dropItem();
 
 			if (item != nullptr) {
+				timeline->GetItemTimeline(std::time(nullptr), player, item);
 				std::cout << "아이템을 획득했습니다: " << item->getName() << std::endl;
 				player->addItem(item); // 플레이어에게 아이템 추가
 			}

@@ -3,11 +3,13 @@ GameManager::GameManager() {
 	battleManager = new BattleManager();
 	storyManager = new StoryManager();
 	tradeManager = new TradeManager();
+	timeline = new Timeline();
 }
 GameManager::~GameManager() {
 	delete battleManager;
 	delete storyManager;
 	delete tradeManager;
+	delete timeline;
 }
 void GameManager::startGame()
 {
@@ -35,7 +37,7 @@ void GameManager::startGame()
 bool GameManager::playGame()
 {
 	std::cout << "┌--------------------------------------------------┐" << endl;
-	std::cout << "│던전탐색[1], 인벤토리[2], 상점방문[3], 게임종료[4]│" << endl;
+	std::cout << "│던전탐색[1], 인벤토리[2], 상점방문[3], 타임라인[4]│" << endl;
 	std::cout << "└--------------------------------------------------┘" << endl;
 	int choice = 0;
 	std::cout << "선택 입력 대기중 : ";
@@ -60,7 +62,7 @@ bool GameManager::playGame()
 		std::cout << "던전 입장중..." << endl;
 		std::cout << "================================" << endl;
 		std::cout <<  endl << endl << "전투 시작!" << endl;
-		if (battleManager->doBattle(player))
+		if (battleManager->doBattle(player, timeline))
 		{
 			std::cout << "전투를 클리어 했습니다!" << endl;
 			if (battleManager->GetIsClearBoss() == true)
@@ -154,6 +156,7 @@ bool GameManager::playGame()
 						break;
 					}
 				}
+
 				system("cls"); // 선택 후 화면 지우기
 
 				if (unequipChoice == 1) {
@@ -177,6 +180,7 @@ bool GameManager::playGame()
 			}
 			else if (inventoryChoice == 4) // 나가기
 			{
+				system("cls");
 				break; // 인벤토리 메뉴를 빠져나와 주 메뉴로 돌아감
 			}
 		}
@@ -218,9 +222,10 @@ bool GameManager::playGame()
 
 		return true;
 	}
-	else
+	else if (choice == 4)
 	{
-		return false;
+		timeline->showTimeline();
+		return true;
 	}
 	
 }

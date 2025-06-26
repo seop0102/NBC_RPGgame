@@ -10,6 +10,7 @@
 #include "Monster.h"
 #include "TradeManager.h"
 #include "Shop.h"
+#include "Timeline.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ public:
 	StoryManager* storyManager = nullptr;
 	TradeManager* tradeManager = nullptr;
 	Character* player = nullptr;
+	Timeline* timeline = nullptr;
 
 public:
 	GameManager();

@@ -144,6 +144,7 @@
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="StoryManager.cpp" />
+    <ClCompile Include="Timeline.cpp" />
     <ClCompile Include="TradeManager.cpp" />
     <ClCompile Include="Warrior.cpp" />
     <ClCompile Include="Weapon.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Slime.h" />
     <ClInclude Include="StoryManager.h" />
+    <ClInclude Include="Timeline.h" />
     <ClInclude Include="TradeManager.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Warrior.h" />

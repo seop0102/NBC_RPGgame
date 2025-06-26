@@ -9,6 +9,7 @@
 #include "Goblin.h"
 #include "BossMonster.h"
 #include "Utils.h"
+#include "Timeline.h"
 
 enum class MonsterType {
 	Orc,
@@ -26,7 +27,7 @@ public:
 	~BattleManager() = default;
 
 
-	bool doBattle(Character* player); //전투를 클리어 하면 true 아니면 false 반환
+	bool doBattle(Character* player, Timeline* timeline); //전투를 클리어 하면 true 아니면 false 반환
 
 	std::string playerchoice(Character* player); //플레이어가 스킬을 선택하는 함수
 
