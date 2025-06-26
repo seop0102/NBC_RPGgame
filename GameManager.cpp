@@ -14,7 +14,7 @@ void GameManager::startGame()
 	storyManager->startPrologue();
 	string job = storyManager->getJob();
 	IClass* selectedClass = nullptr;
-	if (job == "검사") {
+	if (job == "전사") {
 		selectedClass = new Warrior();
 	}
 	else if (job == "궁수") {
@@ -30,7 +30,7 @@ void GameManager::startGame()
 	player->initializeSkillUsages();
 	player->applyPassiveSkill(*player);
 	player->displayStat();
-
+	player->setGold(10000);
 }
 bool GameManager::playGame()
 {
@@ -234,7 +234,7 @@ void GameManager::endGame(bool IsClear)
 	else
 	{
 		std::cout <<  endl << endl << "플레이어가 쓰러졌습니다!" << endl << endl;
-		std::cout << endl << endl <<  "게임 오버" << endl << endl;
+		std::cout << endl << endl <<  "[Game Over]" << endl << endl;
 
 	}
 

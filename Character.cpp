@@ -53,7 +53,10 @@ Character::~Character() {
 		delete characterClass;
 		characterClass = nullptr;
 	}
-	std::cout << name << " 캐릭터가 소멸되었습니다. 관련 메모리가 해제되었습니다." << std::endl;
+	std::cout << "========================================================\n" << std::endl;
+	std::cout << "[" << name << "] 캐릭터가 소멸되었습니다." << std::endl;
+	std::cout << "========================================================\n" << std::endl;
+	exit(0);
 }
 
 void Character::displayStat()
@@ -361,8 +364,6 @@ void Character::unequipWeapon() {
 		std::cout << "장착된 무기가 없습니다." << std::endl;
 	}
 }
-
-
 
 // 방어구 해제 함수
 void Character::unequipArmor() {
