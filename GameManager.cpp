@@ -103,6 +103,7 @@ bool GameManager::playGame()
 		}
 		else if (choose == 2)
 		{
+			system("cls");
 			tradeManager.sellItem(player);
 		}
 		else

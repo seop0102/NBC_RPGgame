@@ -85,7 +85,7 @@ std::string BattleManager::playerchoice(Character* player)
 		while (true)
 		{
 			std::cin >> choice;
-			if (std::cin.fail() || choice <= 0 || choice > ChoiceSize + 1)
+			if (std::cin.fail() || choice <= 0 || choice > ChoiceSize)
 			{
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -115,7 +115,20 @@ std::string BattleManager::playerchoice(Character* player)
 
 			{
 				std::cout << "사용할 아이템을 선택하세요" << std::endl;
-				std::cin >> choice;
+				while (true)
+				{
+					std::cin >> choice;
+					if (std::cin.fail() || choice < 0 || choice >= player->getInventory().size())
+					{
+						std::cin.clear();
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						std::cout << "잘못된 입력입니다. 다시 입력해 주세요." << std::endl;
+					}
+					else
+					{
+						break;
+					}
+				}
 
 				Item* item = player->GetItemByIndex(choice);
 
