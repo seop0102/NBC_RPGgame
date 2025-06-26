@@ -4,8 +4,8 @@
 Goblin::Goblin(int level)
 {
     name = "Goblin";
-    health = 40 + (level * 10);
-    attack = 17 + (level * 3);
+    health = 40 + (level * Utils::getRandomInt(10,20));
+    attack = 17 + (level * Utils::getRandomInt(5, 10));
 }
 
 std::string Goblin::getName() const { return name; }

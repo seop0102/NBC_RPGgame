@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Item.h"
+#include "Utils.h"
 
 class Monster
 {
