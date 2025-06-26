@@ -70,7 +70,7 @@ bool BattleManager::doBattle(Character* player)
 std::string BattleManager::playerchoice(Character* player)
 {
 	while (true)
-	
+
 	{
 		IClass* Cclass = player->getCharacterClass();
 
@@ -101,18 +101,13 @@ std::string BattleManager::playerchoice(Character* player)
 
 
 		if (choice > 0 && choice < ChoiceSize)
-			
-
 		{
 			return Cclass->getSkillbyIndex(choice);
-
 		}
-		else if (choice == ChoiceSize)
-
+		else if (choice == ChoiceSize) // "아이템 사용하기" 선택 시
 		{
 			player->showInventory();
-			if ((player->getInventory()).empty() != true)
-
+			if (!(player->getInventory()).empty()) // 인벤토리가 비어있지 않다면
 			{
 				std::cout << "사용할 아이템을 선택하세요" << std::endl;
 				while (true)
@@ -130,31 +125,33 @@ std::string BattleManager::playerchoice(Character* player)
 					}
 				}
 
-				Item* item = player->GetItemByIndex(choice);
+				Item* selectedItem = player->GetItemByIndex(choice);
 
-				if (item != nullptr && item->getIsEquipped() == false)
-				{
-					item->use(*player);
+				Consumable* consumable = dynamic_cast<Consumable*>(selectedItem);
+				if (consumable != nullptr) {
+					// 소모품이라면 Character::useItem 함수를 호출하여 사용
+					player->useItem(choice);
+					std::cout << "아이템을 사용했습니다." << std::endl;
+					return "아이템 사용"; // 아이템 사용을 반환하여 전투 로직에 반영
 				}
-				else
-				{
-					std::cout << "사용할 수 없는 아이템이거나 잘못된 아이템 번호 입니다" << std::endl;
+				else {
+					// 소모품이 아니라면 전투 중 사용할 수 없음을 알림
+					std::cout << "전투 중에는 소모품만 사용할 수 있습니다." << std::endl;
 				}
 			}
 			else
 			{
+				std::cout << "사용할 수 없는 아이템이거나 잘못된 아이템 번호 입니다" << std::endl;
 			}
 		}
-
 		else
-
 		{
-			// 당장은 처리할 것이 없음.
+			// 당장은 처리할 것이 없음. (예: 잘못된 입력 후 재입력 대기)
 		}
-
-
 	}
+	
 }
+
 
 
 	

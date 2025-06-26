@@ -190,7 +190,6 @@ void Character::removeItem(int index)
 {
 	if (index >= 0 && index < inventory.size()) {
 		Item* itemToRemove = inventory[index]; 
-		std::cout << itemToRemove->getName() << "을(를) 인벤토리에서 제거했습니다." << std::endl;
 		inventory.erase(inventory.begin() + index); 
 		delete itemToRemove;
 	}
@@ -347,21 +346,56 @@ void Character::useItem(int itemIndex) {
 	std::cout << "사용할 수 없는 아이템입니다." << std::endl;
 }
 
+void Character::unequipWeapon() {
+	if (equippedWeapon != nullptr) {
+		// 기존 무기의 스탯 보너스를 캐릭터 스탯에서 제거
+		attack -= equippedWeapon->getAttackBonus();
+
+		// 장착 해제 상태로 변경하고 인벤토리에 다시 추가
+		equippedWeapon->setEquipped(false);
+		addItem(equippedWeapon); // addItem 함수를 사용하여 인벤토리 가득 찼을 때 로직 처리
+		equippedWeapon = nullptr; // 장착 슬롯 비움
+		std::cout << "무기를 해제했습니다." << std::endl;
+	}
+	else {
+		std::cout << "장착된 무기가 없습니다." << std::endl;
+	}
+}
+
+// 방어구 해제 함수
+void Character::unequipArmor() {
+	if (equippedArmor != nullptr) {
+		defense -= equippedArmor->getDefenseBonus();
+		maxHealth -= equippedArmor->getMaxHealthBonus();
+		if (health > maxHealth) {
+			health = maxHealth;
+		}
+
+		// 장착 해제 상태로 변경하고 인벤토리에 다시 추가
+		equippedArmor->setEquipped(false);
+		addItem(equippedArmor); // addItem 함수를 사용하여 인벤토리 가득 찼을 때 로직 처리
+		equippedArmor = nullptr; // 장착 슬롯 비움
+		std::cout << "방어구를 해제했습니다." << std::endl;
+	}
+	else {
+		std::cout << "장착된 방어구가 없습니다." << std::endl;
+	}
+}
+
 std::vector<std::string> Character::getActiveSkills() const {
 	if (characterClass) return characterClass->getActiveSkills();
 	return {};
 }
 
-void Character::useSkill(const std::string& skillName, Character& self, Monster& target, bool isCrit) { // <-- std::string 받음 확인
+void Character::useSkill(const std::string& skillName, Character& self, Monster& target, bool isCrit) { 
 	if (characterClass) {
 		// 스킬 사용 횟수 확인 (예: 1회성 스킬)
-		// 맵의 키는 std::string이므로, skillName으로 직접 접근
-		if (skillUsages.count(skillName) && skillUsages[skillName] > 0) { // <-- std::string 키 접근 확인
+		if (skillUsages.count(skillName) && skillUsages[skillName] > 0) { 
 			characterClass->useSkill(skillName, self, target, isCrit); // 실제 스킬 효과 실행
 
 			// 1회성 스킬은 사용 후 횟수 감소 (스킬 이름을 string으로 비교)
 			if (skillName == "숨기" || skillName == "버티기" || skillName == "망령 화살") {
-				skillUsages[skillName]--; // <-- std::string 키 접근 확인
+				skillUsages[skillName]--; 
 				std::cout << skillName << " 사용! 남은 횟수: " << skillUsages[skillName] << "회." << std::endl;
 			}
 		}
@@ -384,10 +418,7 @@ std::string Character::getClassName() const {
 
 // 스킬 사용 횟수 초기화 함수
 void Character::initializeSkillUsages() {
-	skillUsages.clear(); // 기존 데이터를 깔끔하게 초기화
-
-	// 스킬 이름과 초기 사용 횟수를 직접 문자열 키로 설정
-	// 각 직업의 스킬을 여기에 명시적으로 추가합니다.
+	skillUsages.clear(); 
 
 	// 공통 스킬
 	skillUsages["기본 공격"] = 99; // 무제한
@@ -410,13 +441,13 @@ void Character::initializeSkillUsages() {
 	skillUsages["급습"] = 3;
 	skillUsages["숨기"] = 1; // 1회 제한
 
-	// (필요하다면 여기에 더 많은 스킬과 사용 횟수를 추가)
+	// 필요하다면 여기에 더 많은 스킬과 사용 횟수를 추가
 }
 
 // 스킬 사용 횟수 복원 함수
 void Character::restoreSkillUsage(const std::string& skillName, int amount) {
-	if (skillUsages.count(skillName)) { // skillUsages 맵에 skillName이 있는지 확인
-		if (skillUsages.at(skillName) != 99) { // 무제한 스킬이 아닌 경우에만 복원
+	if (skillUsages.count(skillName)) { 
+		if (skillUsages.at(skillName) != 99) { 
 			skillUsages[skillName] += amount;
 			std::cout << skillName << " 스킬 사용 횟수가 " << amount << "만큼 회복되었습니다. 현재 " << skillUsages[skillName] << "회." << std::endl;
 		}
@@ -447,16 +478,13 @@ void Character::initializeSkillEffect()
 
 // 남은 스킬 사용 횟수 반환 함수
 int Character::getRemainingSkillUsage(const std::string& skillName) const {
-	if (skillUsages.count(skillName)) { // skillUsages 맵에 skillName이 있는지 확인
-		return skillUsages.at(skillName); // 해당 스킬의 남은 횟수 반환
+	if (skillUsages.count(skillName)) { 
+		return skillUsages.at(skillName); 
 	}
 	return 0; // 해당 스킬이 없으면 0 반환 (또는 오류 처리)
 }
 
 // 스킬 타입에 따른 이름 반환 함수
 std::string Character::getSkillName(const std::string& skillName) const {
-	// 스킬 이름이 이미 문자열이므로, 그대로 반환합니다.
-	// 기존의 switch 문은 SkillType enum을 string으로 변환하는 역할을 했지만,
-	// 이제 스킬 이름 자체가 string이므로 필요 없어집니다.
 	return skillName;
 }

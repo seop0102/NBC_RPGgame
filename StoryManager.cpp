@@ -22,12 +22,11 @@ void set_console_color(int color) {
 StoryManager::StoryManager() {} //초기화 시켜주기
 //나중에 startPrologue만 호출하면 됨
 void StoryManager::startPrologue() { //전체 프롤로그 실행
-	//showLogo();
-	aaaaa();
-	//showStory(); //이야기 보여줌
-	//makeJobMap(); //totalnum으로 직업과 맵(던전) 결정
+	showLogo();
+	showStory(); //이야기 보여줌
+	makeJobMap(); //totalnum으로 직업과 맵(던전) 결정
 }
-/*void StoryManager::showStory() {
+void StoryManager::showStory() {
 	playPrologue(); //직업 선택 문제 5개
 	askUsername(); // 유저 이름 입력
 }
@@ -38,14 +37,8 @@ void printSlow(const std::string& text, int delay = 50) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 	}
 	std::cout << std::endl;
-} */
-// 테스트를 위해 다른거 다 주석 처리하고 이거만 실행
-void StoryManager::aaaaa() {
-	job = "도적";
-	map = { "안개의 숲", "안개의 숲 초입", "짙은 안개의 숲", "괴물들의 숲 " , "폐허가 된 마을", "수상한 제단", "종말의 전당" };
-	username = "hi";
 }
-/*  여기서 부터 주석 해제하면 됨
+
 //*
 // _____  _    _ _   _  _____ ______ ____  _   _   _____ _      _
 //|  __ \| |  | | \ | |/ ____|  ____/ __ \| \ | | |  __ (_)    | |
@@ -123,12 +116,10 @@ void StoryManager::playPrologue() {
 	for (int i = 0; i < 5; ++i) {
 		//문제 출력
 		std::cout << "================================================================================" << std::endl;
-		printSlow(".", 500);
-		printSlow(".", 500);
-		printSlow(".\n", 500);
+		printSlow("...\n", 500);
 		// 프롤로그 문장은 한 번에 출력
 		std::cout << "\n" << prologue[i] << std::endl;
-		std::this_thread::sleep_for(std::chrono::seconds(3)); // 3초 대기
+		std::this_thread::sleep_for(std::chrono::seconds(2)); // 3초 대기
 		for (int j = 0; j < 3; j++) {
 			std::cout << answer[i * 3 + j] << "\n"<<std::endl;
 		}
@@ -206,7 +197,7 @@ void StoryManager::makeJobMap() {
 	std::cout << "\n       던전        : " << map[0] << std::endl;
 	std::cout << "\n===================================\n" << std::endl;
 }
-여기 까지 해제           */
+
 std::string StoryManager::getJob() const {
 	return job;
 }
