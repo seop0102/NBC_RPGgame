@@ -85,6 +85,8 @@ public:
 	// 인벤토리 관련
 	void equipWeapon(Weapon* weapon);
 	void equipArmor(Armor* armor);
+	void unequipWeapon(); // 무기 해제
+	void unequipArmor();  // 방어구 해제
 	void useItem(int itemIndex); // 아이템 사용
 	void addItem(Item* item);
 	void removeItem(int index);
