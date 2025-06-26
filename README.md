@@ -110,48 +110,6 @@ NBC_RPGGame
 
 ---
 
-# 🖥 프로젝트 실행 방법(맞는지 모름)
-
-### 1. 프로젝트 클론
-
-```bash
-git clone https://github.com/seop0102/NBC_RPGgame/
-cd NBC_RPGgame
-```
-
-### 2. 컴파일
-
-**Windows (g++)**
-
-```bash
-g++ -o game main.cpp
-```
-
-**macOS / Linux (g++)**
-
-```bash
-g++ -o game main.cpp
-```
-
-> 모든 파일 한꺼번에 컴파일:
-> 
-
-```bash
-g++ -o game *.cpp
-```
-
-### 3. 실행
-
-```bash
-./game
-```
-
-**Windows의 경우:**
-
-```bash
-game.exe
-```
-
----
-
 # 🎥 시연 영상
+
+https://youtu.be/Sw0QNnCA2ms
