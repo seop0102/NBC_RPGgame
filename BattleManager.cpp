@@ -21,6 +21,8 @@ bool BattleManager::doBattle(Character* player)
 
 		std::cout << "몬스터 정보 - 이름:  " << monster->getName() << " 공격력: " << monster->getAttack() << " 체력: " << monster->getHealth() << std::endl << std::endl;
 
+		player->displayStat();
+
 		//전투 구현
 		// 플레이어가 스킬을 선택하는 함수 호출
 		attackMonster(player, playerchoice(player), monster);
@@ -56,8 +58,6 @@ bool BattleManager::doBattle(Character* player)
 
 		player->takeDamage(monster->getAttack()); // 몬스터의 공격으로 플레이어 피해
 		std::cout << monster->getName() << "에게" << monster->getAttack() << "의 피해를 받았습니다." << std::endl << std::endl;
-
-		player->displayStat();
 
 		if (player->getHealth() <= 0) {
 			std::cout << "플레이어가 쓰러졌습니다!" << std::endl;
