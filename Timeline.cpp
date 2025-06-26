@@ -36,7 +36,7 @@ void Timeline::GetItemTimeline(std::time_t now_time_t, Character* character, Ite
 		std::cerr << "오류: 시간을 변환할 수 없습니다. 에러 코드: " << err << std::endl;
 		return;
 	}
-	if (character == nullptr || monster == nullptr)
+	if (character == nullptr || item == nullptr)
 	{
 		std::cerr << "캐릭터 또는 몬스터의 값이 nullptr 입니다." << std::endl;
 		return;
@@ -94,7 +94,7 @@ int Timeline::CountTimeline(std::string s)
 	for (int i = 0; i < timelines.size(); i++)
 	{
 		size_t found_pos = timelines[i].find(s, 0);
-		if(found_pos != std::string::npos);
+		if(found_pos != std::string::npos)
 		{
 			count++;
 		}

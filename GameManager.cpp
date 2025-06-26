@@ -32,7 +32,9 @@ void GameManager::startGame()
 	player->initializeSkillUsages();
 	player->applyPassiveSkill(*player);
 	player->displayStat();
-	player->setGold(10000);
+
+	//테스트용 골드
+	player->setGold(100);
 }
 bool GameManager::playGame()
 {
