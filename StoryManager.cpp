@@ -69,21 +69,34 @@ void StoryManager::showLogo() {
 	set_console_color(FORE_DEFAULT);
 	std::cout << "\nPress 1 : 게임 시작\nPress 2 : 게임 종료 \n";
 	int choice = 0;
-	while (true) {
-		std::cout << "\n번호를 입력하세요 : ";
+	while (true)
+	{
 		std::cin >> choice;
-		if (choice == 1) {
-			system("cls");
+		if (std::cin.fail())
+		{
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << " 1 또는 2 중에 다시 입력해주세요. " << std::endl;
+		}
+		else if (choice != 1 && choice != 2)
+		{
+			std::cout << " 1 또는 2 중에 다시 입력해주세요. " << std::endl;
+		}
+		else
+		{
 			break;
 		}
-		else if (choice == 2) {
-			std::cout << "게임을 종료합니다. \n";
-			exit(0);
-		}
-		else {
-			std::cout << " 1 또는 2 중에 다시 입력해주세요. \n";
-		}
 	}
+	if (choice == 1) 
+	{
+		system("cls");
+	}
+	else if (choice == 2)
+	{
+		std::cout << "게임을 종료합니다. \n";
+		exit(0);
+	}
+	
 }
 void StoryManager::playPrologue() {
 	std::vector<std::string> prologue = {
