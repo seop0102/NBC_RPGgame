@@ -21,8 +21,6 @@ bool BattleManager::doBattle(Character* player)
 
 		std::cout << "몬스터 정보 - 이름:  " << monster->getName() << " 공격력: " << monster->getAttack() << " 체력: " << monster->getHealth() << std::endl << std::endl;
 
-		player->displayStat();
-
 		//전투 구현
 		// 플레이어가 스킬을 선택하는 함수 호출
 		attackMonster(player, playerchoice(player), monster);
@@ -74,6 +72,9 @@ std::string BattleManager::playerchoice(Character* player)
 {
 	while (true)
 	{
+
+		player->displayStat();
+
 		IClass* Cclass = player->getCharacterClass();
 
 		int ChoiceSize = Cclass->getActiveSkills().size() + 1;
@@ -144,6 +145,7 @@ std::string BattleManager::playerchoice(Character* player)
 					// 소모품이 아니라면 전투 중 사용할 수 없음을 알림
 					std::cout << "전투 중에는 소모품만 사용할 수 있습니다." << std::endl;
 				}
+
 			}
 			else
 			{
