@@ -220,13 +220,17 @@ bool BattleManager::isHit(Character* player)
 Monster* BattleManager::CreateMonster(Character* player)
 {
 	assert(player);
-	MonsterType monster = static_cast<MonsterType>(Utils::getRandomInt(0, 1));
+	MonsterType monster = static_cast<MonsterType>(Utils::getRandomInt(0, 3));
 
 	switch (monster) {
 	case MonsterType::Orc:
 		return new Orc(player->getLevel());
 	case MonsterType::Goblin:
 		return new Goblin(player->getLevel());
+	case MonsterType::Skeleton:
+		return new Skeleton(player->getLevel());
+	case MonsterType::Slime:
+		return new Slime(player->getLevel());
 	default:
 		return nullptr;
 	}

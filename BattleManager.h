@@ -7,13 +7,17 @@
 #include "Monster.h"
 #include "Orc.h"
 #include "Goblin.h"
+#include "Slime.h"
+#include "Skeleton.h"	
 #include "BossMonster.h"
 #include "Utils.h"
 #include "Timeline.h"
 
 enum class MonsterType {
 	Orc,
-	Goblin
+	Goblin,
+	Slime,
+	Skeleton
 };
 
 class BattleManager
