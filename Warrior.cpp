@@ -9,13 +9,13 @@
 Warrior::Warrior() {
     // activeSkills 벡터에 직접 스킬 이름을 문자열로 추가
     activeSkills.push_back("기본 공격");
-    SkillDescription.push_back(" (공격력의 100% 대미지를 줍니다)");
+    SkillDescription.push_back(" (공격력의 100% 데미지를 줍니다)");
 
     activeSkills.push_back("베기");
-    SkillDescription.push_back(" (공격력의 120% 대미지를 줍니다)");
+    SkillDescription.push_back(" (공격력의 120% 데미지를 줍니다)");
 
     activeSkills.push_back("방패");
-    SkillDescription.push_back(" (방패를 올려 바어력을 올립니다)");
+    SkillDescription.push_back(" (방패를 올려 방어력을 올립니다)");
 
     activeSkills.push_back("강타");
     SkillDescription.push_back(" (치명타 피해가 높은 공격을 합니다)");
