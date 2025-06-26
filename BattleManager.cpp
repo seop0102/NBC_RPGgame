@@ -19,7 +19,7 @@ bool BattleManager::doBattle(Character* player)
 	{
 
 
-		std::cout << "몬스터 정보 - 이름:  " << monster->getName() << " 공격력: " << monster->getAttack() << " 체력: " << monster->getHealth() << std::endl;
+		std::cout << "몬스터 정보 - 이름:  " << monster->getName() << " 공격력: " << monster->getAttack() << " 체력: " << monster->getHealth() << std::endl << std::endl;
 
 		//전투 구현
 		// 플레이어가 스킬을 선택하는 함수 호출
@@ -55,7 +55,7 @@ bool BattleManager::doBattle(Character* player)
 		}
 
 		player->takeDamage(monster->getAttack()); // 몬스터의 공격으로 플레이어 피해
-		std::cout << monster->getName() << "에게" << monster->getAttack() << "의 피해를 받았습니다." << std::endl;
+		std::cout << monster->getName() << "에게" << monster->getAttack() << "의 피해를 받았습니다." << std::endl << std::endl;
 
 		player->displayStat();
 
@@ -78,12 +78,14 @@ std::string BattleManager::playerchoice(Character* player)
 
 		int ChoiceSize = Cclass->getActiveSkills().size() + 1;
 
+		std::cout << "================================" << std::endl;
 		Cclass->showSkills(); // 캐릭터 클래스의 스킬 목록 출력
-
-		std::cout << ChoiceSize << " 아이템 사용하기" << std::endl;
+		std::cout << ChoiceSize << " 아이템 사용하기" << std::endl << std::endl;
+		std::cout << "================================" << std::endl;
 
 		int choice = 0;
 		std::cout << "번호를 입력해 선택하세요:" << std::endl;
+		std::cout << "================================" << std::endl;
 		while (true)
 		{
 			std::cin >> choice;
@@ -118,7 +120,7 @@ std::string BattleManager::playerchoice(Character* player)
 				while (true)
 				{
 					std::cin >> choice;
-					if (std::cin.fail() || choice < 0 || choice >= player->getInventory().size())
+					if (std::cin.fail() || choice < 0 || choice >= static_cast<int>(player->getInventory().size()))
 					{
 						std::cin.clear();
 						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');

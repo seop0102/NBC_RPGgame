@@ -56,8 +56,10 @@ bool GameManager::playGame()
 	system("cls");
 	if (choice == 1)
 	{
+		std::cout << "================================" << endl;
 		std::cout << "던전 입장중..." << endl;
-		std::cout << "전투 시작!" << endl;
+		std::cout << "================================" << endl;
+		std::cout <<  endl << endl << "전투 시작!" << endl;
 		if (battleManager->doBattle(player))
 		{
 			std::cout << "전투를 클리어 했습니다!" << endl;
@@ -182,7 +184,7 @@ bool GameManager::playGame()
 	}
 	else if (choice == 3)
 	{
-		Shop shop("혁이네 상점");
+		Shop shop("떠돌이 장사꾼의 상점");
 		TradeManager tradeManager;
 		tradeManager.showShopItems(player,shop);
 		std::cout << "구매[1], 판매[2], 나가기[3]" << endl;

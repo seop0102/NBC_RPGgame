@@ -69,7 +69,7 @@ void Character::displayStat()
 	std::cout << "회피율: " << dodgeChance << " %" <<  std::endl;
 	std::cout << "경험치: " << exp << std::endl;
 	std::cout << "골드: " << gold << std::endl;
-	std::cout << "----------------------" << std::endl;
+	std::cout << "----------------------" << std::endl << std::endl;
 }
 
 void Character::levelUp()
@@ -97,7 +97,7 @@ void Character::levelUp()
 		}
 		else {
 			// *현재* 레벨에 충분한 경험치가 없으면 루프 종료
-			std::cout << "경험치가 부족합니다. 다음 레벨업 까지 " << (EXP_TO_NEXT_LEVEL - exp) << "경험치가 더 필요합니다." << std::endl;
+			//std::cout << "경험치가 부족합니다. 다음 레벨업 까지 " << (EXP_TO_NEXT_LEVEL - exp) << "경험치가 더 필요합니다." << std::endl;
 			break;
 		}
 	}
