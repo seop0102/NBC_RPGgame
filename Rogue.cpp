@@ -8,7 +8,7 @@
 // Rogue 생성자에서 스킬 목록 초기화
 Rogue::Rogue() {
     activeSkills.push_back("기본 공격");
-    SkillDescription.push_back(" (공격력의 100% 대미지를 줍니다)");
+    SkillDescription.push_back(" (공격력의 100% 데미지를 줍니다)");
 
     activeSkills.push_back("찢기");
     SkillDescription.push_back(" (추가 공격력을 더해 피해를 줍니다)");

@@ -8,7 +8,7 @@
 
 Archer::Archer() {
     activeSkills.push_back("기본 공격");
-    SkillDescription.push_back(" (공격력의 100% 대미지를 줍니다)");
+    SkillDescription.push_back(" (공격력의 100% 데미지를 줍니다)");
 
     activeSkills.push_back("화살 명중");
     SkillDescription.push_back(" (조준 상태면 화살이 반드시 명중하며 추가 피해를 입힙니다)");
