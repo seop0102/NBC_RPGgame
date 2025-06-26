@@ -80,7 +80,7 @@ void Rogue::useSkill(const std::string& skillName, Character& self, Monster& tar
         target.takeDamage(damage);
     }
     else {
-        std::cout << "도적은 사용할 수 없는 스킬입니다: " << skillName << std::endl;
+        //std::cout << "도적은 사용할 수 없는 스킬입니다: " << skillName << std::endl;
     }
 }
 

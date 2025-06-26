@@ -5,14 +5,18 @@ bool BattleManager::doBattle(Character* player)
 	assert(player);
 	IClass* Cclass = player->getCharacterClass();
 
-	Monster* monster = CreateMonster(player);
+	Monster* monster;
 
 	if (player->getLevel() >= 10) {
 
 		std::cout << "레벨 10 이상! 보스 몬스터가 등장합니다!" << std::endl;
-		monster->setHealth(int(monster->getHealth() * 1.5)); // 레벨 10 이상일 때 보스 몬스터 등장
-		monster->setAttack(int(monster->getAttack() * 1.5)); // 레벨 10 이상일 때 보스 몬스터 등장
+
+		monster = new Drake(player->getLevel());
 		monster->IsBoss = true;
+	}
+	else
+	{
+		monster = CreateMonster(player);
 	}
 
 	while (player->getHealth() > 0 && monster->getHealth() > 0)
@@ -53,7 +57,7 @@ bool BattleManager::doBattle(Character* player)
 		}
 
 		player->takeDamage(monster->getAttack()); // 몬스터의 공격으로 플레이어 피해
-		std::cout << monster->getName() << "에게" << monster->getAttack() << "의 피해를 받았습니다." << std::endl << std::endl;
+		std::cout << monster->getName() << "에게 " << monster->getAttack() << "의 피해를 받았습니다." << std::endl << std::endl;
 
 		if (player->getHealth() <= 0) {
 			std::cout << "플레이어가 쓰러졌습니다!" << std::endl;

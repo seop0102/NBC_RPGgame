@@ -240,8 +240,5 @@ void GameManager::endGame(bool IsClear)
 
 	delete player;
 
-	std::cin.ignore();
-	std::cin.get(); 
-
 	exit(0);
 }

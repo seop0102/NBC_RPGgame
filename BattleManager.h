@@ -7,6 +7,7 @@
 #include "Monster.h"
 #include "Orc.h"
 #include "Goblin.h"
+#include "BossMonster.h"
 #include "Utils.h"
 
 enum class MonsterType {
