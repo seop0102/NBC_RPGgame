@@ -18,7 +18,6 @@ bool BattleManager::doBattle(Character* player)
 	while (player->getHealth() > 0 && monster->getHealth() > 0)
 	{
 
-
 		std::cout << "몬스터 정보 - 이름:  " << monster->getName() << " 공격력: " << monster->getAttack() << " 체력: " << monster->getHealth() << std::endl << std::endl;
 
 		//전투 구현
@@ -28,7 +27,6 @@ bool BattleManager::doBattle(Character* player)
 		if (monster->getHealth() <= 0) {
 
 			std::cout << "몬스터를 처치했습니다!" << std::endl;
-
 
 			if (monster->IsBoss == true) ClearBoss = true;
 

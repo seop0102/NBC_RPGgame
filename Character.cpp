@@ -68,7 +68,7 @@ void Character::displayStat()
 	std::cout << "¸íÁß·ü: " << hitChance << " %" << std::endl;
 	std::cout << "È¸ÇÇÀ²: " << dodgeChance << " %" <<  std::endl;
 	std::cout << "°æÇèÄ¡: " << exp << std::endl;
-	std::cout << "°ñµå: " << gold << std::endl;
+	std::cout << "°ñµå: " << gold << "G" <<std::endl;
 	std::cout << "----------------------" << std::endl << std::endl;
 }
 

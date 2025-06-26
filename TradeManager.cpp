@@ -89,6 +89,6 @@ void TradeManager::sellItem(Character* c)
 }
 void TradeManager::showShopItems(Character* c, Shop& shop, int maxPrice) const {
 	shop.displayShopItems(maxPrice);
-	std::cout << "               º¸À¯ °ñµå : " << c->getGold() << " gold" << std::endl;
+	std::cout << "               º¸À¯ °ñµå : " << c->getGold() << " G" << std::endl;
 	std::cout << "--------------------------------------" << std::endl;
 }
