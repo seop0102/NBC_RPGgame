@@ -49,6 +49,7 @@ void TradeManager::buyItem(Character* c, Shop& shop, int maxPrice)
 }
 void TradeManager::sellItem(Character* c)
 {
+	system("cls");
 	c->showInventory();
 	if (c->getInventory().empty()) {
 		std::cout << "판매할 아이템이 없습니다." << std::endl;

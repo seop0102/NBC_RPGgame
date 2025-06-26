@@ -30,7 +30,7 @@ void GameManager::startGame()
 	player->initializeSkillUsages();
 	player->applyPassiveSkill(*player);
 	player->displayStat();
-
+	player->setGold(10000);
 }
 bool GameManager::playGame()
 {
