@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include  <cassert>
 
 #include "Character.h"
 #include "Monster.h"

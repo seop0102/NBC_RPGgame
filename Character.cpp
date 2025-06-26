@@ -64,9 +64,9 @@ void Character::displayStat()
 	std::cout << "체력: " << health << "/" << maxHealth << std::endl;
 	std::cout << "공격력: " << attack << std::endl;
 	std::cout << "방어력: " << defense << std::endl;
-	std::cout << "치명타확률: " << criticalChance << std::endl;
-	std::cout << "명중률: " << hitChance << std::endl;
-	std::cout << "회피율: " << dodgeChance << std::endl;
+	std::cout << "치명타확률: " << criticalChance <<  " %" << std::endl;
+	std::cout << "명중률: " << hitChance << " %" << std::endl;
+	std::cout << "회피율: " << dodgeChance << " %" <<  std::endl;
 	std::cout << "경험치: " << exp << std::endl;
 	std::cout << "골드: " << gold << std::endl;
 	std::cout << "----------------------" << std::endl;
@@ -361,6 +361,8 @@ void Character::unequipWeapon() {
 		std::cout << "장착된 무기가 없습니다." << std::endl;
 	}
 }
+
+
 
 // 방어구 해제 함수
 void Character::unequipArmor() {

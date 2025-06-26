@@ -2,6 +2,7 @@
 
 bool BattleManager::doBattle(Character* player)
 {
+	assert(player);
 	IClass* Cclass = player->getCharacterClass();
 
 	Monster* monster = CreateMonster(player);
@@ -72,7 +73,6 @@ bool BattleManager::doBattle(Character* player)
 std::string BattleManager::playerchoice(Character* player)
 {
 	while (true)
-	
 	{
 		IClass* Cclass = player->getCharacterClass();
 
@@ -83,63 +83,84 @@ std::string BattleManager::playerchoice(Character* player)
 		std::cout << ChoiceSize << " 아이템 사용하기" << std::endl;
 
 		int choice = 0;
-
 		std::cout << "번호를 입력해 선택하세요:" << std::endl;
-
-		std::cin >> choice;
+		while (true)
+		{
+			std::cin >> choice;
+			if (std::cin.fail() || choice <= 0 || choice > ChoiceSize)
+			{
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cout << "잘못된 입력입니다. 다시 입력해 주세요." << std::endl;
+			}
+			else
+			{
+				break;
+			}
+		}
 
 		system("cls");
 
 
 		if (choice > 0 && choice < ChoiceSize)
-			
+
 
 		{
 			return Cclass->getSkillbyIndex(choice);
 
 		}
-		else if (choice == ChoiceSize)
-
+		else if (choice == ChoiceSize) // "아이템 사용하기" 선택 시
 		{
 			player->showInventory();
-			if ((player->getInventory()).empty() != true)
-
+			if (!(player->getInventory()).empty()) // 인벤토리가 비어있지 않다면
 			{
 				std::cout << "사용할 아이템을 선택하세요" << std::endl;
-				std::cin >> choice;
-
-				Item* item = player->GetItemByIndex(choice);
-
-				if (item != nullptr && item->getIsEquipped() == false)
+				while (true)
 				{
-					item->use(*player);
+					std::cin >> choice;
+					if (std::cin.fail() || choice < 0 || choice >= player->getInventory().size())
+					{
+						std::cin.clear();
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						std::cout << "잘못된 입력입니다. 다시 입력해 주세요." << std::endl;
+					}
+					else
+					{
+						break;
+					}
 				}
-				else
-				{
-					//std::cout << "사용할 수 없는 아이템이거나 잘못된 아이템 번호 입니다" << std::endl;
+				Item* selectedItem = player->GetItemByIndex(choice);
+
+				Consumable* consumable = dynamic_cast<Consumable*>(selectedItem);
+				if (consumable != nullptr) {
+					// 소모품이라면 Character::useItem 함수를 호출하여 사용
+					player->useItem(choice);
+					std::cout << "아이템을 사용했습니다." << std::endl;
+					return "아이템 사용"; // 아이템 사용을 반환하여 전투 로직에 반영
+				}
+				else {
+					// 소모품이 아니라면 전투 중 사용할 수 없음을 알림
+					std::cout << "전투 중에는 소모품만 사용할 수 있습니다." << std::endl;
 				}
 			}
 			else
 			{
+				std::cout << "사용할 수 없는 아이템이거나 잘못된 아이템 번호 입니다" << std::endl;
 			}
 		}
-
 		else
 
 		{
-			std::cout << "잘못된 선택입니다" << std::endl;
+			// 당장은 처리할 것이 없음. (예: 잘못된 입력 후 재입력 대기)
 		}
 
 
 	}
+
 }
-
-
-	
-
-
 void BattleManager::attackMonster(Character* player, std::string skill, Monster* monster)
 {
+	assert(player); assert(monster);
 	bool crit = isCrit(player);
 
 	if (skill == "조준" || skill == "방패" || skill == "버티기" || skill == "숨기") {
@@ -170,21 +191,25 @@ void BattleManager::attackMonster(Character* player, std::string skill, Monster*
 
 bool BattleManager::isCrit(Character* player)
 {
+	assert(player);
 	return Utils::checkChance(player->getCriticalChance() * Utils::rollDice());
 }
 
 bool BattleManager::isDodge(Character* player)
 {
+	assert(player);
 	return Utils::checkChance(player->getDodgeChance() * Utils::rollDice());
 }
 
 bool BattleManager::isHit(Character* player)
 {
+	assert(player);
 	return Utils::checkChance(player->getHitChance());
 }
 
 Monster* BattleManager::CreateMonster(Character* player)
 {
+	assert(player);
 	MonsterType monster = static_cast<MonsterType>(Utils::getRandomInt(0, 1));
 
 	switch (monster) {
@@ -200,6 +225,7 @@ Monster* BattleManager::CreateMonster(Character* player)
 void BattleManager::attackPlayer(Character* player, Monster* monster)
 
 {
+	assert(player); assert(monster);
 	if (player->getIsHiding())
 
 	{

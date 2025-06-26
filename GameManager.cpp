@@ -132,7 +132,7 @@ void GameManager::endGame(bool IsClear)
 	else
 	{
 		std::cout <<  endl << endl << "플레이어가 쓰러졌습니다!" << endl << endl;
-		std::cout << "게임 오버" << endl << endl;
+		std::cout << endl << endl <<  "게임 오버" << endl << endl;
 
 	}
 
