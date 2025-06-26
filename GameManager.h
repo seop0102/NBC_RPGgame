@@ -34,6 +34,6 @@ public:
 
 	bool playGame();
 
-	void endGame();
+	void endGame(bool IsClear);
 
 };

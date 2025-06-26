@@ -11,7 +11,7 @@ bool BattleManager::doBattle(Character* player)
 		std::cout << "레벨 10 이상! 보스 몬스터가 등장합니다!" << std::endl;
 		monster->setHealth(int(monster->getHealth() * 1.5)); // 레벨 10 이상일 때 보스 몬스터 등장
 		monster->setAttack(int(monster->getAttack() * 1.5)); // 레벨 10 이상일 때 보스 몬스터 등장
-
+		monster->IsBoss = true;
 	}
 
 	while (player->getHealth() > 0 && monster->getHealth() > 0)
@@ -27,6 +27,9 @@ bool BattleManager::doBattle(Character* player)
 		if (monster->getHealth() <= 0) {
 
 			std::cout << "몬스터를 처치했습니다!" << std::endl;
+
+
+			if (monster->IsBoss == true) ClearBoss = true;
 
 			player->addGold(monster->getGold()); // 몬스터 처치 시 골드 추가
 
@@ -46,7 +49,7 @@ bool BattleManager::doBattle(Character* player)
 
 			delete monster;
 
-			return true; // 전투 클리어
+			return true;
 			break;
 		}
 

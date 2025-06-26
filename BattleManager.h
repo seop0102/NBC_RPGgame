@@ -17,6 +17,7 @@ class BattleManager
 {
 private:
 	const int EXP = 50;
+	bool ClearBoss = false;
 	
 public:
 	BattleManager() = default;
@@ -27,8 +28,6 @@ public:
 
 	std::string playerchoice(Character* player); //플레이어가 스킬을 선택하는 함수
 
-	void UseItem(Character* player);
-
 	void attackMonster(Character* player, std::string skill, Monster* monster);
 
 	void attackPlayer(Character* player, Monster* monster);
@@ -38,6 +37,8 @@ public:
 	bool isDodge(Character* player);
 
 	bool isHit(Character* player);
+
+	bool GetIsClearBoss() { return ClearBoss; }
 
 
 	Monster* CreateMonster(Character* player);

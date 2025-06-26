@@ -61,11 +61,17 @@ bool GameManager::playGame()
 		if (battleManager->doBattle(player))
 		{
 			std::cout << "전투를 클리어 했습니다!" << endl;
+			if (battleManager->GetIsClearBoss() == true)
+			{
+				endGame(battleManager->GetIsClearBoss());
+			}
+
 			player->displayStat();
 		}
 		else
 		{
 			std::cout << "전투에서 패배했습니다." << endl;
+			endGame(battleManager->GetIsClearBoss());
 		}
 		return true;
 	}
@@ -116,7 +122,24 @@ bool GameManager::playGame()
 	}
 	
 }
-void GameManager::endGame()
+void GameManager::endGame(bool IsClear)
 {
-	std::cout << "게임 종료!" << endl;
+	if (IsClear)
+	{
+		std::cout << "게임을 클리어 했습니다!" << endl;
+
+	}
+	else
+	{
+		std::cout << "플레이어가 쓰러졌습니다!" << endl << endl;
+		std::cout << "게임 오버" << endl << endl;
+
+	}
+
+	delete player;
+
+	std::cin.ignore();
+	std::cin.get(); 
+
+	exit(0);
 }

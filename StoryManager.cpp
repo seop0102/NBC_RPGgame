@@ -24,7 +24,7 @@ void printSlow(const std::string& text, int delay = 50) {
 	for (char c : text) {
 		std::cout << c;
 		std::cout.flush(); // 즉시 출력
-		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 	}
 	std::cout << std::endl;
 }
@@ -59,9 +59,9 @@ void StoryManager::playPrologue() {
 		//문제 출력
 		std::cout << "================================================================================ \n\n ……" << std::endl;
 		std::cout << "\n\n\n" << prologue[i] << std::endl;
-		std::this_thread::sleep_for(std::chrono::seconds(1)); // 1초 대기
+		//std::this_thread::sleep_for(std::chrono::seconds(1)); // 1초 대기
 		for (int j = 0; j < 3; j++) {
-			std::this_thread::sleep_for(std::chrono::seconds(1)); // 1초 대기
+			//std::this_thread::sleep_for(std::chrono::seconds(1)); // 1초 대기
 			std::cout << answer[i * 3 + j] << std::endl; //답변 출력
 		}
 		std::cout << "================================================================================" << std::endl;

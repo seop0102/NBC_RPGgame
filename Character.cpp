@@ -82,7 +82,7 @@ void Character::levelUp()
 	}
 
 	while (level < MAX_LEVEL) {
-		const int EXP_TO_NEXT_LEVEL = level * 100; // *현재* 레벨을 기반으로 계산
+		const int EXP_TO_NEXT_LEVEL = 100; // *현재* 레벨을 기반으로 계산
 
 		if (exp >= EXP_TO_NEXT_LEVEL) {
 			level++;

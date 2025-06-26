@@ -7,7 +7,5 @@ int main() {
 
 	while ( gameManager.playGame() ) {}
 
-	gameManager.endGame();
-
 	return 0;
 }

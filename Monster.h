@@ -25,4 +25,7 @@ public:
     virtual int getGold() const;
 
     Item* dropItem() const;
+
+    bool IsBoss = false;
+
 };
